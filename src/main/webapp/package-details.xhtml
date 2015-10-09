@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ ! Copyright (c) 2015 Red Hat, Inc.
+ !
+ ! Licensed under the Apache License, Version 2.0 (the "License");
+ ! you may not use this file except in compliance with the License.
+ ! You may obtain a copy of the License at
+ !
+ !     http://www.apache.org/licenses/LICENSE-2.0
+ !
+ ! Unless required by applicable law or agreed to in writing, software
+ ! distributed under the License is distributed on an "AS IS" BASIS,
+ ! WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ ! See the License for the specific language governing permissions and
+ ! limitations under the License.
+ `-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                template="/WEB-INF/templates/default.xhtml">
+
+  <ui:define name="title">
+    Insim - package #{packageView.name}
+  </ui:define>
+
+  <ui:define name="content">
+    <c:set var="package" value="#{packageView.package}" />
+
+    <h:panelGroup rendered="#{empty package}">
+      <em>Package #{packageView.name} is not known to Insim. You
+        can contact Insim administrators in order to request adding this
+        package.</em>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{not empty package}">
+      <h:panelGrid columns="2" columnClasses="label,value">
+        <h:outputText value="Name:" />
+        <h:outputText value="#{package.name}" />
+        <h:outputText value="Baseline:" />
+        <h:outputText value="#{package.baseline.name}" />
+        <h:outputText value="Upstream URL:" />
+        <h:outputLink value="#{package.upstream}">
+          <h:outputText value="#{package.upstream}" />
+        </h:outputLink>
+      </h:panelGrid>
+
+      <p:dataTable var="collectionView" value="#{packageView.collectionViews}">
+        <p:column headerText="Collection">
+          <h:outputText value="#{collectionView.collection.name}" />
+          <f:facet name="footer">Upstream</f:facet>
+        </p:column>
+        <p:column headerText="Version">
+          <h:outputText value="#{collectionView.latestInstallation.version}" />
+          <f:facet name="footer"><h:outputText value="#{package.upstreamVersion}" /></f:facet>
+        </p:column>
+        <p:column headerText="Install size">
+          <h:outputText value="#{collectionView.latestInstallation.installSize}" />
+          <f:facet name="footer"><h:outputText value="#{package.upstreamInstallSize}" /></f:facet>
+        </p:column>
+        <p:column headerText="Download size">
+          <h:outputText value="#{collectionView.latestInstallation.downloadSize}" />
+          <f:facet name="footer"><h:outputText value="#{package.upstreamDownloadSize}" /></f:facet>
+        </p:column>
+        <p:column headerText="Dependency count">
+          <h:outputText value="#{collectionView.latestInstallation.dependencyCount}" />
+        </p:column>
+        <p:column headerText="File count">
+          <h:outputText value="#{collectionView.latestInstallation.fileCount}" />
+        </p:column>
+      </p:dataTable>
+
+      <ul>
+        <li><h:selectBooleanCheckbox value="true" onclick="$('.iszchart').toggle(checked)" />install size</li>
+        <li><h:selectBooleanCheckbox value="true" onclick="$('.dszchart').toggle(checked)" />download size</li>
+        <li><h:selectBooleanCheckbox value="true" onclick="$('.dcnchart').toggle(checked)" />dependency count</li>
+        <li><h:selectBooleanCheckbox value="true" onclick="$('.fcnchart').toggle(checked)" />file count</li>
+      </ul>
+
+      <ui:repeat var="chart" value="#{packageView.charts}">
+        <div class="#{chart.id}chart">
+          <p:chart type="bar" model="#{chart.model}"
+                   style="width:#{chart.width}px;margin-left:50px;height:300px" />
+        </div>
+      </ui:repeat>
+
+      <ui:repeat var="collectionView"
+                 value="#{packageView.collectionViews}">
+        <h2>Collection #{collectionView.collection.name}</h2>
+        <p>
+          Latest version-release:
+          <code>#{collectionView.latestInstallation.version}-#{collectionView.latestInstallation.release}</code>
+        </p>
+        <ui:repeat var="chart" value="#{collectionView.charts}">
+          <div class="#{chart.id}chart">
+            <p:chart type="line" model="#{chart.model}"
+                     style="width:#{chart.width}px;margin-left:50px;height:300px" />
+          </div>
+        </ui:repeat>
+      </ui:repeat>
+    </h:panelGroup>
+  </ui:define>
+
+</ui:composition>

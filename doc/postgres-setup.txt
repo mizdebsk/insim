@@ -1,0 +1,19 @@
+su - postgres
+createuser -P insimuser
+createdb -O insimuser insim
+
+sed -i '1host insim insimuser 127.0.0.1/32 md5' /var/lib/pgsql/data/pg_hba.conf
+
+cd /tmp
+wget https://jdbc.postgresql.org/download/postgresql-9.4-1203.jdbc42.jar
+
+cd wildfly-9.0.0.Final/bin
+./jboss-cli.sh
+connect
+
+module add --name=org.postgres --resources=/tmp/postgresql-9.4-1203.jdbc42.jar --dependencies=javax.api,javax.transaction.api
+
+/subsystem=datasources/jdbc-driver=postgres:add(driver-name="postgres",driver-module-name="org.postgres",driver-class-name=org.postgresql.Driver)
+
+data-source add --jndi-name=java:/InsimDS --name=PostgrePool --connection-url=jdbc:postgresql://127.0.0.1/insim --driver-name=postgres --user-name=insimuser --password=xxx
+

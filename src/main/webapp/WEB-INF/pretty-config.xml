@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ ! Copyright (c) 2015 Red Hat, Inc.
+ !
+ ! Licensed under the Apache License, Version 2.0 (the "License");
+ ! you may not use this file except in compliance with the License.
+ ! You may obtain a copy of the License at
+ !
+ !     http://www.apache.org/licenses/LICENSE-2.0
+ !
+ ! Unless required by applicable law or agreed to in writing, software
+ ! distributed under the License is distributed on an "AS IS" BASIS,
+ ! WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ ! See the License for the specific language governing permissions and
+ ! limitations under the License.
+ `-->
+<pretty-config xmlns="http://ocpsoft.org/schema/rewrite-config-prettyfaces"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://ocpsoft.org/schema/rewrite-config-prettyfaces
+                                   http://ocpsoft.org/xml/ns/prettyfaces/rewrite-config-prettyfaces.xsd">
+
+  <url-mapping id="package-list">
+    <pattern value="/" />
+    <view-id value="/package-list.jsf" />
+  </url-mapping>
+  <url-mapping id="collection-list">
+    <pattern value="/collections" />
+    <view-id value="/collection-list.jsf" />
+  </url-mapping>
+  <url-mapping id="package-details">
+    <pattern value="/package/#{packageView.name}" />
+    <view-id value="/package-details.jsf" />
+    <action>#{packageView.load}</action>
+  </url-mapping>
+  <url-mapping id="collection-details">
+    <pattern value="/collection/#{collectionView.name}" />
+    <view-id value="/collection-details.jsf" />
+    <action>#{collectionView.load}</action>
+  </url-mapping>
+
+</pretty-config>

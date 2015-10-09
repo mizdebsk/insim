@@ -1,0 +1,8 @@
+Insim is a web application for monitoring installation size of RPM
+packages.  It tracks installation and download sizes for selected
+packages and allows comparing them among different repositories.
+
+Insim is free software. You can redistribute and/or modify it under
+the terms of Apache License Version 2.0.
+
+Insim was written by Mikolaj Izdebski.
