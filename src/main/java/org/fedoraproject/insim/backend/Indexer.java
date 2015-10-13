@@ -94,16 +94,23 @@ public class Indexer {
         return inst;
     }
 
-    public Installation index(String collectionName) {
+    public Installation index(String collectionName, String url, Long timestamp) {
 
         Collection collection = collectionDao.getByName(collectionName);
         if (collection == null) {
             return null;
         }
 
-        try (Sack sack = new Sack("x86_64")) {
+        if (url == null) {
+            url = collection.getLocation();
+        }
+        if (timestamp == null) {
+            timestamp = new Date().getTime();
+        } else {
+            timestamp *= 1000;
+        }
 
-            String url = collection.getLocation();
+        try (Sack sack = new Sack("x86_64")) {
 
             for (String arch : ARCHES) {
                 try (RepoCache repoCache = new RepoCache(url, arch)) {
@@ -114,7 +121,7 @@ public class Indexer {
             Repository repo = new Repository();
             repo.setCollection(collection);
             repo.setActive(true);
-            repo.setCreationTime(new Timestamp(new Date().getTime()));
+            repo.setCreationTime(new Timestamp(timestamp));
             repoDao.persist(repo);
 
             for (Package pkg : pkgDao.getAll()) {

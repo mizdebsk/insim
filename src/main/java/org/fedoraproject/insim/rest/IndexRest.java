@@ -21,6 +21,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.fedoraproject.insim.backend.Indexer;
@@ -39,8 +40,12 @@ public class IndexRest {
     @GET
     @Path("{name}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Installation listAllMembers(@PathParam("name") String name) {
-        return indexer.index(name);
+    public Installation listAllMembers( //
+            @PathParam("name") String name, //
+            @QueryParam("url") String url, //
+            @QueryParam("timestamp") Long timestamp //
+    ) {
+        return indexer.index(name, url, timestamp);
     }
 
 }
