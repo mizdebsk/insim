@@ -1,11 +1,18 @@
 BEGIN;
 
 INSERT INTO BASELINE(NAME) VALUES
+    ('buildsys-build'),
     ('java'),
     ('java-devel'),
     ('eclipse');
 
 INSERT INTO BASELINE_PKGS(BASELINE_NAME, PKGS) VALUES
+    ('buildsys-build', 'bash'), ('buildsys-build', 'bzip2'), ('buildsys-build', 'coreutils'), ('buildsys-build', 'cpio'),
+    ('buildsys-build', 'diffutils'), ('buildsys-build', 'fedora-release'), ('buildsys-build', 'findutils'), ('buildsys-build', 'gawk'),
+    ('buildsys-build', 'gcc'), ('buildsys-build', 'gcc-c++'), ('buildsys-build', 'grep'), ('buildsys-build', 'gzip'),
+    ('buildsys-build', 'info'), ('buildsys-build', 'make'), ('buildsys-build', 'patch'), ('buildsys-build', 'redhat-rpm-config'),
+    ('buildsys-build', 'rpm-build'), ('buildsys-build', 'sed'), ('buildsys-build', 'shadow-utils'), ('buildsys-build', 'tar'),
+    ('buildsys-build', 'unzip'), ('buildsys-build', 'util-linux'), ('buildsys-build', 'which'), ('buildsys-build', 'xz'),
     ('java', 'java-1.8.0-openjdk'),
     ('java-devel', 'java-1.8.0-openjdk-devel'),
     ('eclipse', 'eclipse-platform'), ('eclipse', 'java-1.8.0-openjdk-devel');
@@ -22,7 +29,9 @@ INSERT INTO PACKAGE(NAME, UPSTREAM, UPSTREAMDOWNLOADSIZE, UPSTREAMINSTALLSIZE, U
     ('eclipse-jdt', 'https://www.eclipse.org/', 160990943, 182863820, '4.4.2', 'java-devel'),
     ('jenkins', 'https://jenkins-ci.org/', 63121651, 73292627, '1.615', 'java-devel'),
     ('gradle', 'http://gradle.org/', 45383133, 51291589, '2.4', 'java-devel'),
-    ('groovy', 'http://www.groovy-lang.org/', 31968599, 35756588, '2.4.3', 'java-devel');
+    ('groovy', 'http://www.groovy-lang.org/', 31968599, 35756588, '2.4.3', 'java-devel'),
+    ('maven-local', '', 0, 0, '0', 'buildsys-build'),
+    ('gradle-local', '', 0, 0, '0', 'buildsys-build');
 
 INSERT INTO COLLECTION_PACKAGE(PACKAGES_NAME, COLLECTIONS_NAME)
     SELECT PACKAGE.NAME, COLLECTION.NAME FROM PACKAGE, COLLECTION
