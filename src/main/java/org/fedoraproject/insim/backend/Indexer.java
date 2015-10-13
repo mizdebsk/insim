@@ -97,6 +97,9 @@ public class Indexer {
     public Installation index(String collectionName) {
 
         Collection collection = collectionDao.getByName(collectionName);
+        if (collection == null) {
+            return null;
+        }
 
         try (Sack sack = new Sack("x86_64")) {
 
