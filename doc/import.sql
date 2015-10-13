@@ -30,6 +30,7 @@ INSERT INTO PACKAGE(NAME, UPSTREAM, UPSTREAMDOWNLOADSIZE, UPSTREAMINSTALLSIZE, U
     ('jenkins', 'https://jenkins-ci.org/', 63121651, 73292627, '1.615', 'java-devel'),
     ('gradle', 'http://gradle.org/', 45383133, 51291589, '2.4', 'java-devel'),
     ('groovy', 'http://www.groovy-lang.org/', 31968599, 35756588, '2.4.3', 'java-devel'),
+    ('freemind', 'http://sourceforge.net/projects/freemind/', 37583505, 41406322, '1.0.1', 'java'),
     ('maven-local', '', 0, 0, '0', 'buildsys-build'),
     ('gradle-local', '', 0, 0, '0', 'buildsys-build');
 
