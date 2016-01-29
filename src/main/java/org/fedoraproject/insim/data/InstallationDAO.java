@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2015 Red Hat, Inc.
+ * Copyright (c) 2015-2016 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,6 +41,10 @@ public class InstallationDAO {
 
     @Inject
     private EntityManager em;
+
+    public Installation getById(Integer id) {
+        return em.find(Installation.class, id);
+    }
 
     public List<Installation> getByPackageCollection(Package pkg, Collection col) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
