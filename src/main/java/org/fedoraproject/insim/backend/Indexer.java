@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2015 Red Hat, Inc.
+ * Copyright (c) 2015-2016 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ import org.fedoraproject.insim.data.InstallationDAO;
 import org.fedoraproject.insim.data.PackageDAO;
 import org.fedoraproject.insim.data.RepositoryDAO;
 import org.fedoraproject.insim.model.Collection;
+import org.fedoraproject.insim.model.Dependency;
 import org.fedoraproject.insim.model.Installation;
 import org.fedoraproject.insim.model.Package;
 import org.fedoraproject.insim.model.Repository;
@@ -80,9 +81,17 @@ public class Indexer {
             if (dep.getName().equals(pkg.getName())) {
                 inst.setVersion(dep.getVersion());
                 inst.setRelease(dep.getRelease());
-            } else {
-                deps.add(dep.getName());
             }
+            Dependency d = new Dependency();
+            d.setName(dep.getName());
+            d.setEpoch(dep.getEpoch());
+            d.setVersion(dep.getVersion());
+            d.setRelease(dep.getRelease());
+            d.setArch(dep.getArch());
+            d.setFileCount(dep.getFileCount());
+            d.setInstallSize(dep.getInstallSize());
+            d.setDownloadSize(dep.getDownloadSize());
+            inst.addDependency(d);
         }
 
         inst.setComplete(true);
@@ -90,7 +99,6 @@ public class Indexer {
         inst.setFileCount(fileCount);
         inst.setDownloadSize(downloadSize);
         inst.setInstallSize(installSize);
-        inst.setDependencies(deps);
         return inst;
     }
 

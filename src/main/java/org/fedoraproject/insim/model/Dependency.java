@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2015 Red Hat, Inc.
+ * Copyright (c) 2016 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +16,17 @@
 package org.fedoraproject.insim.model;
 
 import java.io.Serializable;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 /**
  * @author Mikolaj Izdebski
  */
 @Entity
-public class Installation implements Serializable {
+public class Dependency implements Serializable {
 
     private static final long serialVersionUID = 1;
 
@@ -38,18 +34,15 @@ public class Installation implements Serializable {
     @GeneratedValue
     private Integer id;
     @ManyToOne
-    private Package pkg;
-    @ManyToOne
-    private Repository repository;
+    private Installation installation;
+    private String name;
+    private Integer epoch;
     private String version;
     private String release;
-    private Boolean complete;
+    private String arch;
     private Long installSize;
     private Long downloadSize;
-    private Integer dependencyCount;
     private Integer fileCount;
-    @OneToMany(cascade = CascadeType.PERSIST)
-    private Set<Dependency> dependencies = new LinkedHashSet<>();
 
     public Integer getId() {
         return this.id;
@@ -59,20 +52,28 @@ public class Installation implements Serializable {
         this.id = id;
     }
 
-    public Package getPackage() {
-        return this.pkg;
+    public Installation getInstallation() {
+        return installation;
     }
 
-    public void setPackage(Package packagee) {
-        this.pkg = packagee;
+    public void setInstallation(Installation installation) {
+        this.installation = installation;
     }
 
-    public Repository getRepository() {
-        return this.repository;
+    public String getName() {
+        return name;
     }
 
-    public void setRepository(Repository repository) {
-        this.repository = repository;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getEpoch() {
+        return epoch;
+    }
+
+    public void setEpoch(Integer epoch) {
+        this.epoch = epoch;
     }
 
     public String getVersion() {
@@ -91,12 +92,12 @@ public class Installation implements Serializable {
         this.release = release;
     }
 
-    public Boolean getComplete() {
-        return this.complete;
+    public String getArch() {
+        return arch;
     }
 
-    public void setComplete(Boolean complete) {
-        this.complete = complete;
+    public void setArch(String arch) {
+        this.arch = arch;
     }
 
     public Long getInstallSize() {
@@ -115,32 +116,12 @@ public class Installation implements Serializable {
         this.downloadSize = downloadSize;
     }
 
-    public Integer getDependencyCount() {
-        return this.dependencyCount;
-    }
-
-    public void setDependencyCount(Integer dependencyCount) {
-        this.dependencyCount = dependencyCount;
-    }
-
     public Integer getFileCount() {
         return this.fileCount;
     }
 
     public void setFileCount(Integer fileCount) {
         this.fileCount = fileCount;
-    }
-
-    public Set<Dependency> getDependencies() {
-        return this.dependencies;
-    }
-
-    public void setDependencies(Set<Dependency> dependencies) {
-        this.dependencies = dependencies;
-    }
-
-    public void addDependency(Dependency dependency) {
-        dependencies.add(dependency);
     }
 
 }

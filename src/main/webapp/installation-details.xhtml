@@ -61,7 +61,7 @@
 
       <p:dataTable var="dependency" value="#{installation.dependencies}">
         <p:column headerText="Dependency">
-          <h:outputText value="#{dependency}" />
+          <h:outputText value="#{dependency.name}" />
         </p:column>
       </p:dataTable>
     </h:panelGroup>
