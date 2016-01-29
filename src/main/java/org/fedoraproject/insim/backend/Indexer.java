@@ -99,6 +99,7 @@ public class Indexer {
         inst.setFileCount(fileCount);
         inst.setDownloadSize(downloadSize);
         inst.setInstallSize(installSize);
+        inst.setDependencyCount(inst.getDependencies().size());
         return inst;
     }
 
