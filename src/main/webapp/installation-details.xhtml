@@ -59,9 +59,32 @@
         <h:outputText value="#{installation.fileCount}" />
       </h:panelGrid>
 
+      <h2>Dependencies</h2>
+
       <p:dataTable var="dependency" value="#{installation.dependencies}">
-        <p:column headerText="Dependency">
+        <p:column headerText="Name">
           <h:outputText value="#{dependency.name}" />
+        </p:column>
+        <p:column headerText="Epoch">
+          <h:outputText value="#{dependency.epoch}" />
+        </p:column>
+        <p:column headerText="Version">
+          <h:outputText value="#{dependency.version}" />
+        </p:column>
+        <p:column headerText="Release">
+          <h:outputText value="#{dependency.release}" />
+        </p:column>
+        <p:column headerText="Arch">
+          <h:outputText value="#{dependency.arch}" />
+        </p:column>
+        <p:column headerText="Install size">
+          <h:outputText value="#{dependency.installSize}" />
+        </p:column>
+        <p:column headerText="Download size">
+          <h:outputText value="#{dependency.downloadSize}" />
+        </p:column>
+        <p:column headerText="File count">
+          <h:outputText value="#{dependency.fileCount}" />
         </p:column>
       </p:dataTable>
     </h:panelGroup>

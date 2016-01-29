@@ -25,6 +25,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 /**
  * @author Mikolaj Izdebski
@@ -49,6 +50,7 @@ public class Installation implements Serializable {
     private Integer dependencyCount;
     private Integer fileCount;
     @OneToMany(cascade = CascadeType.PERSIST)
+    @OrderBy("name ASC")
     private Set<Dependency> dependencies = new LinkedHashSet<>();
 
     public Integer getId() {
