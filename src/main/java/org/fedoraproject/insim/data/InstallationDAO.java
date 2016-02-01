@@ -16,12 +16,15 @@
 package org.fedoraproject.insim.data;
 
 import java.util.List;
+import java.util.function.Function;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -46,27 +49,25 @@ public class InstallationDAO {
         return em.find(Installation.class, id);
     }
 
-    public List<Installation> getByPackageCollection(Package pkg, Collection col) {
+    private TypedQuery<Installation> createPackageCollectionQuery(Package pkg, Collection col, boolean orderDescTime) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Installation> criteria = cb.createQuery(Installation.class);
         Root<Installation> inst = criteria.from(Installation.class);
         Predicate pkgMatch = cb.equal(inst.get(Installation_.pkg), pkg);
         Predicate colMatch = cb.equal(inst.join(Installation_.repository).get(Repository_.collection), col);
-        Order order = cb.asc(inst.join(Installation_.repository).get(Repository_.creationTime));
+        Function<Expression<?>, Order> orderFunc = orderDescTime ? cb::desc : cb::asc;
+        Order order = orderFunc.apply(inst.join(Installation_.repository).get(Repository_.creationTime));
         criteria.select(inst).where(cb.and(pkgMatch, colMatch)).orderBy(order);
-        return em.createQuery(criteria).getResultList();
+        return em.createQuery(criteria);
+    }
+
+    public List<Installation> getByPackageCollection(Package pkg, Collection col) {
+        return createPackageCollectionQuery(pkg, col, false).getResultList();
     }
 
     public Installation getLatestByPackageCollection(Package pkg, Collection col) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Installation> criteria = cb.createQuery(Installation.class);
-        Root<Installation> inst = criteria.from(Installation.class);
-        Predicate pkgMatch = cb.equal(inst.get(Installation_.pkg), pkg);
-        Predicate colMatch = cb.equal(inst.join(Installation_.repository).get(Repository_.collection), col);
-        Order order = cb.desc(inst.join(Installation_.repository).get(Repository_.creationTime));
-        criteria.select(inst).where(cb.and(pkgMatch, colMatch)).orderBy(order);
-        List<Installation> resultList = em.createQuery(criteria).setMaxResults(1).getResultList();
-        return resultList.isEmpty() ? null : resultList.iterator().next();
+        return createPackageCollectionQuery(pkg, col, true) //
+                .setMaxResults(1).getResultList().stream().findFirst().orElse(null);
     }
 
     @Transactional
