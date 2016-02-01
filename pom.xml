@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!--
- ! Copyright (c) 2015 Red Hat, Inc.
+ ! Copyright (c) 2015-2016 Red Hat, Inc.
  !
  ! Licensed under the Apache License, Version 2.0 (the "License");
  ! you may not use this file except in compliance with the License.
@@ -75,6 +75,13 @@
       <groupId>org.primefaces</groupId>
       <artifactId>primefaces</artifactId>
       <version>5.2</version>
+    </dependency>
+
+    <!-- JavaScript resources -->
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>dygraphs</artifactId>
+      <version>1.1.1</version>
     </dependency>
 
     <!-- Test dependencies -->

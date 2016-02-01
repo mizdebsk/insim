@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!--
- ! Copyright (c) 2015 Red Hat, Inc.
+ ! Copyright (c) 2015-2016 Red Hat, Inc.
  !
  ! Licensed under the Apache License, Version 2.0 (the "License");
  ! you may not use this file except in compliance with the License.
@@ -73,14 +73,14 @@
       </p:dataTable>
 
       <ul>
-        <li><h:selectBooleanCheckbox value="true" onclick="$('.iszchart').toggle(checked)" />install size</li>
-        <li><h:selectBooleanCheckbox value="true" onclick="$('.dszchart').toggle(checked)" />download size</li>
-        <li><h:selectBooleanCheckbox value="true" onclick="$('.dcnchart').toggle(checked)" />dependency count</li>
-        <li><h:selectBooleanCheckbox value="true" onclick="$('.fcnchart').toggle(checked)" />file count</li>
+        <li><h:selectBooleanCheckbox value="true" onclick="$('.chart-isz').toggle(checked)" />install size</li>
+        <li><h:selectBooleanCheckbox value="true" onclick="$('.chart-dsz').toggle(checked)" />download size</li>
+        <li><h:selectBooleanCheckbox value="true" onclick="$('.chart-dcn').toggle(checked)" />dependency count</li>
+        <li><h:selectBooleanCheckbox value="true" onclick="$('.chart-fcn').toggle(checked)" />file count</li>
       </ul>
 
       <ui:repeat var="chart" value="#{packageView.charts}">
-        <div class="#{chart.id}chart">
+        <div class="chart-#{chart.id}">
           <p:chart type="bar" model="#{chart.model}"
                    style="width:#{chart.width}px;margin-left:50px;height:300px" />
         </div>
@@ -89,18 +89,20 @@
       <ui:repeat var="collectionView"
                  value="#{packageView.collectionViews}">
         <h2>Collection #{collectionView.collection.name}</h2>
+        <div class="coll-#{collectionView.collection.name}">
         <p>
           Latest version-release:
           <code>#{collectionView.latestInstallation.version}-#{collectionView.latestInstallation.release}</code>
         </p>
         <ui:repeat var="chart" value="#{collectionView.charts}">
-          <div class="#{chart.id}chart">
-            <p:chart type="line" model="#{chart.model}"
-                     style="width:#{chart.width}px;margin-left:50px;height:300px" />
-          </div>
+          <div class="chart-#{chart.id}"/>
         </ui:repeat>
+        </div>
       </ui:repeat>
     </h:panelGroup>
+
+    <h:outputScript library="js" name="graph.js" />
+    <h:outputScript>$.getJSON('api/data/installations/#{packageView.package.name}', loadGraphs)</h:outputScript>
   </ui:define>
 
 </ui:composition>
