@@ -17,7 +17,9 @@ package org.fedoraproject.insim.backend;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.fedoraproject.javadeptools.hawkey.Goal;
@@ -78,6 +80,16 @@ class Simulation {
 
             return true;
         }
+    }
+
+    public Map<PackageInfo, Set<PackageInfo>> getDependencyTree() throws HawkeyException {
+        Map<PackageInfo, Set<PackageInfo>> map = new LinkedHashMap<>();
+        for (PackageInfo pkg : instPkgs) {
+            Set<PackageInfo> deps = new LinkedHashSet<>(sack.resolveRequires(pkg.getName()));
+            deps.retainAll(instPkgs);
+            map.put(pkg, deps);
+        }
+        return map;
     }
 
 }

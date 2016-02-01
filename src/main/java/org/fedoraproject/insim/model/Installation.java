@@ -23,6 +23,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -49,6 +50,8 @@ public class Installation implements Serializable {
     private Long downloadSize;
     private Integer dependencyCount;
     private Integer fileCount;
+    @Lob
+    private String dependencyGraphJson;
     @OneToMany(cascade = CascadeType.PERSIST)
     @OrderBy("name ASC")
     private Set<Dependency> dependencies = new LinkedHashSet<>();
@@ -131,6 +134,14 @@ public class Installation implements Serializable {
 
     public void setFileCount(Integer fileCount) {
         this.fileCount = fileCount;
+    }
+
+    public String getDependencyGraphJson() {
+        return dependencyGraphJson;
+    }
+
+    public void setDependencyGraphJson(String dependencyGraphJson) {
+        this.dependencyGraphJson = dependencyGraphJson;
     }
 
     public Set<Dependency> getDependencies() {

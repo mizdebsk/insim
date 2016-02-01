@@ -21,7 +21,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -60,6 +62,14 @@ public class Indexer {
 
     @Inject
     private InstallationDAO instDao;
+
+    private static String jsonify(Map<PackageInfo, Set<PackageInfo>> map) {
+        return "{"
+                + map.entrySet().stream()
+                        .map(e -> "\"" + e.getKey().getName() + "\":[" + e.getValue().stream()
+                                .map(dep -> "\"" + dep.getName() + "\"").collect(Collectors.joining(",")) + "]")
+                .collect(Collectors.joining(",")) + "}";
+    }
 
     private Installation newInstallation(Sack sack, Package pkg) throws HawkeyException {
         Installation inst = new Installation();
@@ -102,6 +112,7 @@ public class Indexer {
         inst.setDownloadSize(downloadSize);
         inst.setInstallSize(installSize);
         inst.setDependencyCount(inst.getDependencies().size());
+        inst.setDependencyGraphJson(jsonify(sim.getDependencyTree()));
         return inst;
     }
 
