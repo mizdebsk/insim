@@ -25,6 +25,8 @@ import java.util.Set;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.fedoraproject.insim.data.CollectionDAO;
 import org.fedoraproject.insim.data.InstallationDAO;
@@ -103,11 +105,11 @@ public class Indexer {
         return inst;
     }
 
-    public Installation index(String collectionName, String url, Long timestamp) {
+    public Response index(String collectionName, String url, Long timestamp) {
 
         Collection collection = collectionDao.getByName(collectionName);
         if (collection == null) {
-            return null;
+            return Response.status(Status.NOT_FOUND).build();
         }
 
         if (url == null) {
@@ -142,7 +144,7 @@ public class Indexer {
             throw new RuntimeException(e);
         }
 
-        return null;
+        return Response.noContent().build();
     }
 
 }

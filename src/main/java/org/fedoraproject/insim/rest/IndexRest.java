@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2015 Red Hat, Inc.
+ * Copyright (c) 2015-2016 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.fedoraproject.insim.backend.Indexer;
-import org.fedoraproject.insim.model.Installation;
 
 /**
  * @author Mikolaj Izdebski
@@ -40,7 +40,7 @@ public class IndexRest {
     @GET
     @Path("{name}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Installation listAllMembers( //
+    public Response listAllMembers( //
             @PathParam("name") String name, //
             @QueryParam("url") String url, //
             @QueryParam("timestamp") Long timestamp //
