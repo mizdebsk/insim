@@ -47,28 +47,28 @@
         </h:outputLink>
       </h:panelGrid>
 
-      <p:dataTable var="collectionView" value="#{packageView.collectionViews}">
+      <p:dataTable var="collectionInfo" value="#{packageView.collectionInfos}">
         <p:column headerText="Collection">
-          <h:outputText value="#{collectionView.collection.name}" />
+          <h:outputText value="#{collectionInfo.collection.name}" />
           <f:facet name="footer">Upstream</f:facet>
         </p:column>
         <p:column headerText="Version">
-          <h:outputText value="#{collectionView.latestInstallation.version}" />
+          <h:outputText value="#{collectionInfo.latestInstallation.version}" />
           <f:facet name="footer"><h:outputText value="#{package.upstreamVersion}" /></f:facet>
         </p:column>
         <p:column headerText="Install size">
-          <h:outputText value="#{collectionView.latestInstallation.installSize}" />
+          <h:outputText value="#{collectionInfo.latestInstallation.installSize}" />
           <f:facet name="footer"><h:outputText value="#{package.upstreamInstallSize}" /></f:facet>
         </p:column>
         <p:column headerText="Download size">
-          <h:outputText value="#{collectionView.latestInstallation.downloadSize}" />
+          <h:outputText value="#{collectionInfo.latestInstallation.downloadSize}" />
           <f:facet name="footer"><h:outputText value="#{package.upstreamDownloadSize}" /></f:facet>
         </p:column>
         <p:column headerText="Dependency count">
-          <h:outputText value="#{collectionView.latestInstallation.dependencyCount}" />
+          <h:outputText value="#{collectionInfo.latestInstallation.dependencyCount}" />
         </p:column>
         <p:column headerText="File count">
-          <h:outputText value="#{collectionView.latestInstallation.fileCount}" />
+          <h:outputText value="#{collectionInfo.latestInstallation.fileCount}" />
         </p:column>
       </p:dataTable>
 
@@ -86,17 +86,17 @@
         </div>
       </ui:repeat>
 
-      <ui:repeat var="collectionView"
-                 value="#{packageView.collectionViews}">
-        <h2>Collection #{collectionView.collection.name}</h2>
-        <div class="coll-#{collectionView.collection.name}">
-        <p>
-          Latest version-release:
-          <code>#{collectionView.latestInstallation.version}-#{collectionView.latestInstallation.release}</code>
-        </p>
-        <ui:repeat var="chart" value="#{collectionView.charts}">
-          <div class="chart-#{chart.id}"/>
-        </ui:repeat>
+      <ui:repeat var="collectionInfo" value="#{packageView.collectionInfos}">
+        <div class="coll-#{collectionInfo.collection.name}">
+          <h2>Collection #{collectionInfo.collection.name}</h2>
+          <p>
+            Latest version-release:
+            <code>#{collectionInfo.latestInstallation.version}-#{collectionInfo.latestInstallation.release}</code>
+          </p>
+          <div class="chart-isz"/>
+          <div class="chart-dsz"/>
+          <div class="chart-dcn"/>
+          <div class="chart-fcn"/>
         </div>
       </ui:repeat>
     </h:panelGroup>

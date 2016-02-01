@@ -48,7 +48,7 @@ public class PackageView {
 
     private String name;
 
-    private final List<PackageCollectionView> collectionViews = new ArrayList<>();
+    private final List<CollectionInfo> collectionInfos = new ArrayList<>();
 
     private final List<Chart> charts = new ArrayList<>();
 
@@ -62,8 +62,8 @@ public class PackageView {
             model = new BarChartModel();
             model.setTitle(title);
             ChartSeries values = new ChartSeries();
-            for (PackageCollectionView pcv : collectionViews) {
-                values.set(pcv.getCollection().getName(), f.apply(pcv.getLatestInstallation()));
+            for (CollectionInfo pci : collectionInfos) {
+                values.set(pci.getCollection().getName(), f.apply(pci.getLatestInstallation()));
             }
             if (upstreamValue != null) {
                 values.set("Upsteam", upstreamValue);
@@ -88,6 +88,25 @@ public class PackageView {
 
     }
 
+    public static class CollectionInfo {
+        private final Collection collection;
+        private final Installation latestInstallation;
+
+        public CollectionInfo(Collection collection, Installation latestInstallation) {
+            this.collection = collection;
+            this.latestInstallation = latestInstallation;
+        }
+
+        public Collection getCollection() {
+            return collection;
+        }
+
+        public Installation getLatestInstallation() {
+            return latestInstallation;
+        }
+
+    }
+
     public Package getPackage() {
         return pkg;
     }
@@ -98,9 +117,9 @@ public class PackageView {
             return;
 
         for (Collection coll : pkg.getCollections()) {
-            List<Installation> installations = instDAO.getByPackageCollection(pkg, coll);
-            if (!installations.isEmpty()) {
-                collectionViews.add(new PackageCollectionView(pkg, coll, installations));
+            Installation latestInstallation = instDAO.getLatestByPackageCollection(pkg, coll);
+            if (latestInstallation != null) {
+                collectionInfos.add(new CollectionInfo(coll, latestInstallation));
             }
         }
 
@@ -118,8 +137,8 @@ public class PackageView {
         this.name = name;
     }
 
-    public List<PackageCollectionView> getCollectionViews() {
-        return collectionViews;
+    public List<CollectionInfo> getCollectionInfos() {
+        return collectionInfos;
     }
 
     public List<Chart> getCharts() {

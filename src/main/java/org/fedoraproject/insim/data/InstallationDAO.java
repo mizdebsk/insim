@@ -57,6 +57,18 @@ public class InstallationDAO {
         return em.createQuery(criteria).getResultList();
     }
 
+    public Installation getLatestByPackageCollection(Package pkg, Collection col) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Installation> criteria = cb.createQuery(Installation.class);
+        Root<Installation> inst = criteria.from(Installation.class);
+        Predicate pkgMatch = cb.equal(inst.get(Installation_.pkg), pkg);
+        Predicate colMatch = cb.equal(inst.join(Installation_.repository).get(Repository_.collection), col);
+        Order order = cb.desc(inst.join(Installation_.repository).get(Repository_.creationTime));
+        criteria.select(inst).where(cb.and(pkgMatch, colMatch)).orderBy(order);
+        List<Installation> resultList = em.createQuery(criteria).setMaxResults(1).getResultList();
+        return resultList.isEmpty() ? null : resultList.iterator().next();
+    }
+
     @Transactional
     public void persist(Installation inst) {
         em.persist(inst);
