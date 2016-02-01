@@ -42,5 +42,10 @@
     <view-id value="/installation-details.jsf" />
     <action>#{installationView.load}</action>
   </url-mapping>
+  <url-mapping id="collection-details">
+    <pattern value="/installation/diff/#{installationDiffView.oldId}/#{installationDiffView.newId}" />
+    <view-id value="/installation-diff.jsf" />
+    <action>#{installationDiffView.load}</action>
+  </url-mapping>
 
 </pretty-config>
