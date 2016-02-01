@@ -28,9 +28,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.fedoraproject.insim.data.DependencyGraphDAO;
 import org.fedoraproject.insim.data.InstallationDAO;
 import org.fedoraproject.insim.data.PackageDAO;
 import org.fedoraproject.insim.model.Collection;
+import org.fedoraproject.insim.model.DependencyGraph;
 import org.fedoraproject.insim.model.Package;
 
 /**
@@ -45,6 +47,9 @@ public class DataRest {
 
     @Inject
     private InstallationDAO instDao;
+
+    @Inject
+    private DependencyGraphDAO graphDao;
 
     @GET
     @Path("installations/{package}")
@@ -61,6 +66,19 @@ public class DataRest {
                 .map(inst -> Arrays.asList(inst.getId(), inst.getRepository().getCreationTime(), inst.getComplete(),
                         inst.getInstallSize(), inst.getDownloadSize(), inst.getDependencyCount(), inst.getFileCount()))
                 .collect(Collectors.toList())));
+    }
+
+    @GET
+    @Path("graph/{installation}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getDependencyGraph( //
+            @PathParam("installation") Integer instId //
+    ) {
+        DependencyGraph graph = graphDao.getById(instId);
+        if (graph == null)
+            return Response.status(Status.NOT_FOUND).build();
+
+        return Response.ok(graph.getJson()).build();
     }
 
 }

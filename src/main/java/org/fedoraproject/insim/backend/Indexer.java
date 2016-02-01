@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,11 +30,12 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.fedoraproject.insim.data.CollectionDAO;
+import org.fedoraproject.insim.data.DependencyGraphDAO;
 import org.fedoraproject.insim.data.InstallationDAO;
 import org.fedoraproject.insim.data.PackageDAO;
 import org.fedoraproject.insim.data.RepositoryDAO;
 import org.fedoraproject.insim.model.Collection;
-import org.fedoraproject.insim.model.Dependency;
+import org.fedoraproject.insim.model.DependencyGraph;
 import org.fedoraproject.insim.model.Installation;
 import org.fedoraproject.insim.model.Package;
 import org.fedoraproject.insim.model.Repository;
@@ -63,6 +63,9 @@ public class Indexer {
     @Inject
     private InstallationDAO instDao;
 
+    @Inject
+    private DependencyGraphDAO graphDao;
+
     private static String jsonify(Map<PackageInfo, Set<PackageInfo>> map) {
         return "{"
                 + map.entrySet().stream()
@@ -71,21 +74,22 @@ public class Indexer {
                 .collect(Collectors.joining(",")) + "}";
     }
 
-    private Installation newInstallation(Sack sack, Package pkg) throws HawkeyException {
+    private void newInstallation(Sack sack, Repository repo, Package pkg) throws HawkeyException {
         Installation inst = new Installation();
+        inst.setRepository(repo);
         inst.setPackage(pkg);
 
         Simulation sim = new Simulation(sack, pkg.getName());
         sim.setBaseDeps(pkg.getBaseline().getPackages());
         if (!sim.run()) {
             inst.setComplete(false);
-            return inst;
+            instDao.persist(inst);
+            return;
         }
 
         int fileCount = 0;
         long downloadSize = 0;
         long installSize = 0;
-        Set<String> deps = new LinkedHashSet<>();
         for (PackageInfo dep : sim.getInstPkgs()) {
             fileCount += dep.getFileCount();
             downloadSize += dep.getDownloadSize();
@@ -94,26 +98,19 @@ public class Indexer {
                 inst.setVersion(dep.getVersion());
                 inst.setRelease(dep.getRelease());
             }
-            Dependency d = new Dependency();
-            d.setName(dep.getName());
-            d.setEpoch(dep.getEpoch());
-            d.setVersion(dep.getVersion());
-            d.setRelease(dep.getRelease());
-            d.setArch(dep.getArch());
-            d.setFileCount(dep.getFileCount());
-            d.setInstallSize(dep.getInstallSize());
-            d.setDownloadSize(dep.getDownloadSize());
-            inst.addDependency(d);
         }
 
         inst.setComplete(true);
-        inst.setDependencyCount(deps.size());
+        inst.setDependencyCount(sim.getInstPkgs().size() - 1);
         inst.setFileCount(fileCount);
         inst.setDownloadSize(downloadSize);
         inst.setInstallSize(installSize);
-        inst.setDependencyCount(inst.getDependencies().size());
-        inst.setDependencyGraphJson(jsonify(sim.getDependencyTree()));
-        return inst;
+        instDao.persist(inst);
+
+        DependencyGraph graph = new DependencyGraph();
+        graph.setInstallation(inst);
+        graph.setJson(jsonify(sim.getDependencyTree()));
+        graphDao.persist(graph);
     }
 
     public Response index(String collectionName, String url, Long timestamp) {
@@ -147,9 +144,7 @@ public class Indexer {
             repoDao.persist(repo);
 
             for (Package pkg : pkgDao.getAll()) {
-                Installation inst = newInstallation(sack, pkg);
-                inst.setRepository(repo);
-                instDao.persist(inst);
+                newInstallation(sack, repo, pkg);
             }
         } catch (HawkeyException | IOException e) {
             throw new RuntimeException(e);

@@ -16,17 +16,11 @@
 package org.fedoraproject.insim.model;
 
 import java.io.Serializable;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 
 /**
  * @author Mikolaj Izdebski
@@ -50,11 +44,6 @@ public class Installation implements Serializable {
     private Long downloadSize;
     private Integer dependencyCount;
     private Integer fileCount;
-    @Lob
-    private String dependencyGraphJson;
-    @OneToMany(cascade = CascadeType.PERSIST)
-    @OrderBy("name ASC")
-    private Set<Dependency> dependencies = new LinkedHashSet<>();
 
     public Integer getId() {
         return this.id;
@@ -134,26 +123,6 @@ public class Installation implements Serializable {
 
     public void setFileCount(Integer fileCount) {
         this.fileCount = fileCount;
-    }
-
-    public String getDependencyGraphJson() {
-        return dependencyGraphJson;
-    }
-
-    public void setDependencyGraphJson(String dependencyGraphJson) {
-        this.dependencyGraphJson = dependencyGraphJson;
-    }
-
-    public Set<Dependency> getDependencies() {
-        return this.dependencies;
-    }
-
-    public void setDependencies(Set<Dependency> dependencies) {
-        this.dependencies = dependencies;
-    }
-
-    public void addDependency(Dependency dependency) {
-        dependencies.add(dependency);
     }
 
 }
