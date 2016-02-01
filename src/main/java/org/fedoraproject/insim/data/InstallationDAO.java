@@ -52,7 +52,7 @@ public class InstallationDAO {
         Root<Installation> inst = criteria.from(Installation.class);
         Predicate pkgMatch = cb.equal(inst.get(Installation_.pkg), pkg);
         Predicate colMatch = cb.equal(inst.join(Installation_.repository).get(Repository_.collection), col);
-        Order order = cb.asc(inst.join(Installation_.repository).get(Repository_.id));
+        Order order = cb.asc(inst.join(Installation_.repository).get(Repository_.creationTime));
         criteria.select(inst).where(cb.and(pkgMatch, colMatch)).orderBy(order);
         return em.createQuery(criteria).getResultList();
     }
