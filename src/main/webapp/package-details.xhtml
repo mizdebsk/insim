@@ -22,6 +22,15 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
                 template="/WEB-INF/templates/default.xhtml">
 
+  <ui:define name="params">
+    packageName: '#{packageView.package.name}'
+  </ui:define>
+
+  <ui:define name="resources">
+    <h:outputScript library="webjars/dygraphs/1.1.1" name="dygraph-combined.js"/>
+    <h:outputScript library="js" name="graph.js" />
+  </ui:define>
+
   <ui:define name="title">
     Insim - package #{packageView.name}
   </ui:define>
@@ -100,9 +109,6 @@
         </div>
       </ui:repeat>
     </h:panelGroup>
-
-    <h:outputScript library="js" name="graph.js" />
-    <h:outputScript>$.getJSON('api/data/installations/#{packageView.package.name}', loadGraphs)</h:outputScript>
   </ui:define>
 
 </ui:composition>

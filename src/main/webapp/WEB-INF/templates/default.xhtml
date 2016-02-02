@@ -22,15 +22,15 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
   <h:head>
+    <h:outputScript>jsf = { <ui:insert name="params"/> }</h:outputScript>
+    <ui:insert name="resources"/>
     <title><ui:insert name="title"/></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <base href="#{request.requestURL.substring(0, request.requestURL.length() - request.requestURI.length())}#{request.contextPath}/" />
-    <h:outputScript library="webjars/dygraphs/1.1.1" name="dygraph-combined.js"/>
   </h:head>
 
   <h:body>
     <div id="container">
-    <div id="graphdiv"></div>
       <h1><ui:insert name="title"/></h1>
       <div id="menu">
         <p:tabMenu activeIndex="-1">

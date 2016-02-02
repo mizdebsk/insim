@@ -22,6 +22,15 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
                 template="/WEB-INF/templates/default.xhtml">
 
+  <ui:define name="params">
+    installationId: #{installationView.installation.id}
+  </ui:define>
+
+  <ui:define name="resources">
+    <h:outputScript library="webjars/viz.js/1.3.0" name="viz.js" />
+    <h:outputScript library="js" name="deps.js" />
+  </ui:define>
+
   <ui:define name="title">
     Insim - installation details
   </ui:define>
@@ -60,11 +69,7 @@
       </h:panelGrid>
 
       <h2>Dependency graph</h2>
-
       <div id="jsviz"/>
-      <h:outputScript library="webjars/viz.js/1.3.0" name="viz.js" />
-      <h:outputScript library="js" name="deps.js" />
-      <h:outputScript>$.getJSON('api/data/graph/#{installation.id}', loadDependencyGraph)</h:outputScript>
     </h:panelGroup>
   </ui:define>
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-function loadDependencyGraph(data) {
+function createDependencyGraph(data) {
     var s = '';
     for ( var pkg in data) {
         if (data.hasOwnProperty(pkg)) {
@@ -29,7 +29,7 @@ function loadDependencyGraph(data) {
     $("#jsviz").html(Viz('digraph {' + s + '}'));
 }
 
-function createDependencyGraphDiff(data1, data2) {
+function createDependencyDiffGraph(data1, data2) {
     var s = '';
 
     var data = {};
@@ -79,10 +79,21 @@ function createDependencyGraphDiff(data1, data2) {
     $("#jsviz").html(Viz('digraph {' + s + '}'));
 }
 
-function loadDependencyGraphDiff(oldId, newId) {
-    $.getJSON("api/data/graph/" + oldId, function(oldData) {
-        $.getJSON("api/data/graph/" + newId, function(newData) {
-            createDependencyGraphDiff(oldData, newData);
-        });
-    });
+function fetchGraphData(id, handler) {
+    $.getJSON('/insim/api/data/graph/' + id, handler);
 }
+
+function depsOnload() {
+    if (jsf.installationId) {
+        fetchGraphData(jsf.installationId, createDependencyGraph);
+    }
+    if (jsf.oldInstallationId) {
+        fetchGraphData(jsf.oldInstallationId, function(oldData) {
+            fetchGraphData(jsf.newInstallationId, function(newData) {
+                createDependencyDiffGraph(oldData, newData);
+            });
+        });
+    }
+}
+
+$(document).ready(depsOnload);

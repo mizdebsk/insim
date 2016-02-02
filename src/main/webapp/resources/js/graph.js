@@ -71,3 +71,7 @@ function loadGraphs(data) {
         }
     }
 }
+
+$(document).ready(function() {
+    $.getJSON('/insim/api/data/installations/' + jsf.packageName, loadGraphs)
+});
