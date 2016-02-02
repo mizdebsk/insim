@@ -6,7 +6,7 @@ Initial setup
 -------------
 
     setenforce 0
-    dnf -y install emacs-nox wget maven git httpd postgresql-server
+    dnf -y install emacs-nox wget httpd postgresql-server
     useradd wildfly
     useradd insim
 
@@ -15,18 +15,15 @@ Install Wildfly
 ---------------
 
     su - wildfly
-    wget http://download.jboss.org/wildfly/10.0.0.CR2/wildfly-10.0.0.CR2.tar.gz
+    wget http://download.jboss.org/wildfly/9.0.0.Final/wildfly-9.0.0.Final.tar.gz
 
     cd /opt
-    tar xf /home/wildfly/wildfly-10.0.0.CR2.tar.gz
-    mv wildfly-10.0.0.CR2/ wildfly
+    tar xf /home/wildfly/wildfly-9.0.0.Final.tar.gz
+    mv wildfly-9.0.0.Final/ wildfly
     chown -R wildfly:wildfly wildfly
     curl -s https://gist.githubusercontent.com/marekjelen/8568448/raw/193178c4e41578178914976de7818f0b28ab5024/gistfile1.ini >/usr/lib/systemd/system/wildfly.service
     systemctl start wildfly
     systemctl enable wildfly
-
-    su - wildfly
-    /opt/wildfly/bin/add-user.sh
 
 
 Configure PostgreSQL
@@ -64,12 +61,12 @@ Configure httpd proxy
     cat <<EOF >/etc/httpd/conf.d/insim.conf
     <VirtualHost *:*>
         RewriteEngine On
-        RewriteRule ^/insim/api/ - [F,NC]
+        RewriteRule ^/insim/api/index - [F,NC]
         RewriteRule ^/$ /insim/ [L,R=301]
         ProxyPreserveHost On
         ProxyPass / http://0.0.0.0:8080/
         ProxyPassReverse / http://0.0.0.0:8080/
-        ServerName insim.fedoraproject.org
+        ServerName insim.fedorainfracloud.org
     </VirtualHost>
     EOF
 
@@ -80,13 +77,4 @@ Configure httpd proxy
 Deploy WAR
 ----------
 
-    su - insim
-
-    git clone git://github.com/mizdebsk/java-deptools-native.git
-    cd ./java-deptools-native
-    mvn clean install
-    cd ..
-
-    git clone git://github.com/mizdebsk/insim.git
-    cd ./insim
-    mvn -Dwildfly.username=insimadmin -Dwildfly.password=xxx clean verify wildfly:deploy
+    scp target/insim.war root@insim.fedorainfracloud.org:/opt/wildfly/standalone/deployments/
