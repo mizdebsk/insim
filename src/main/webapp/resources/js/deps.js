@@ -14,24 +14,10 @@
  * limitations under the License.
  */
 
-function createDependencyGraph(data) {
-    var s = '';
-    for ( var pkg in data) {
-        if (data.hasOwnProperty(pkg)) {
-            s += '"' + pkg + '"[tooltip="' + pkg + '"];';
-            deps = data[pkg];
-            deps.forEach(function(dep) {
-                s += '"' + pkg + '" -> "' + dep + '"';
-                s += '[tooltip="' + pkg + ' requires ' + dep + '"];';
-            });
-        }
-    }
-    $("#jsviz").html(Viz('digraph {' + s + '}'));
-}
+colors = [ 'black', 'red', 'green' ];
 
-function createDependencyDiffGraph(data1, data2) {
+function createDependencyGraph(data1, data2) {
     var s = '';
-
     var data = {};
 
     for ( var pkg in data1) {
@@ -54,28 +40,31 @@ function createDependencyDiffGraph(data1, data2) {
 
     for ( var pkg in data) {
         if (data.hasOwnProperty(pkg)) {
-            s += '"' + pkg + '"[';
-            if (!data1.hasOwnProperty(pkg)) {
-                s += 'color=green;fontcolor=green;';
-            } else if (!data2.hasOwnProperty(pkg)) {
-                s += 'color=red;fontcolor=red;';
-            }
-            s += 'tooltip="' + pkg + '"];';
-            deps = data[pkg];
-            deps.forEach(function(dep) {
-                s += '"' + pkg + '" -> "' + dep + '"[';
-                if (!data1.hasOwnProperty(pkg) || !data1.hasOwnProperty(dep)
-                        || data1[pkg].indexOf(dep) == -1) {
-                    s += 'color=green;';
-                } else if (!data2.hasOwnProperty(pkg)
-                        || !data2.hasOwnProperty(dep)
-                        || data2[pkg].indexOf(dep) == -1) {
-                    s += 'color=red;';
-                }
-                s += 'tooltip="' + pkg + ' requires ' + dep + '"];';
+            var oldHasNode = data1.hasOwnProperty(pkg);
+            var newHasNode = data2.hasOwnProperty(pkg);
+            var nodeUnique = oldHasNode ? newHasNode ? 0 : 1 : 2;
+
+            s += '"' + pkg + '"';
+            s += '[';
+            s += 'color=' + colors[nodeUnique] + ';';
+            s += 'fontcolor=' + colors[nodeUnique] + ';';
+            s += 'tooltip="' + pkg + '";';
+            s += '];';
+
+            data[pkg].forEach(function(dep) {
+                var oldHasEdge = oldHasNode && data1[pkg].indexOf(dep) >= 0;
+                var newHasEdge = newHasNode && data2[pkg].indexOf(dep) >= 0;
+                var edgeUnique = oldHasEdge ? newHasEdge ? 0 : 1 : 2;
+
+                s += '"' + pkg + '" -> "' + dep + '"';
+                s += '[';
+                s += 'color=' + colors[edgeUnique] + ';';
+                s += 'tooltip="' + pkg + ' requires ' + dep + '";';
+                s += '];';
             });
         }
     }
+
     $("#jsviz").html(Viz('digraph {' + s + '}'));
 }
 
@@ -85,12 +74,14 @@ function fetchGraphData(id, handler) {
 
 function depsOnload() {
     if (jsf.installationId) {
-        fetchGraphData(jsf.installationId, createDependencyGraph);
+        fetchGraphData(jsf.installationId, function(data) {
+            createDependencyGraph(data, data);
+        });
     }
     if (jsf.oldInstallationId) {
         fetchGraphData(jsf.oldInstallationId, function(oldData) {
             fetchGraphData(jsf.newInstallationId, function(newData) {
-                createDependencyDiffGraph(oldData, newData);
+                createDependencyGraph(oldData, newData);
             });
         });
     }
