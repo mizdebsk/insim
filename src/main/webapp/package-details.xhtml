@@ -95,6 +95,12 @@
         </div>
       </ui:repeat>
 
+      <p>The following charts can be <strong>zoomed</strong>-in by clicking and dragging. To zoom-out, simply double-click
+         on the chart.</p>
+      <p>To see <strong>details</strong> of package installation, control-click on point representing it.
+         To see <strong>differences</strong> between two particular installations (from the same or different collections),
+         click on the first installation to compare and then shift-click on the second one.</p>
+
       <ui:repeat var="collectionInfo" value="#{packageView.collectionInfos}">
         <div class="coll-#{collectionInfo.collection.name}">
           <h2>Collection #{collectionInfo.collection.name}</h2>
