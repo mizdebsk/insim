@@ -32,13 +32,25 @@ graphTypes = [ {
     index : 6
 } ];
 
-function graphClickHandler(collData, timestamp) {
+var selectedId;
+
+function findInstallationIdByTimestamp(collData, timestamp) {
     for (var i = 0; i < collData.length; i++) {
         var inst = collData[i];
         if (inst[1] == timestamp) {
-            var id = inst[0];
-            location.href = "installation/" + id;
+            return inst[0];
         }
+    }
+    return undefined;
+}
+
+function graphClickHandler(collData, e, id) {
+    if (e.shiftKey && selectedId) {
+        location.href = "installation/diff/" + selectedId + "/" + id;
+    } else if (e.ctrlKey) {
+        location.href = "installation/" + id;
+    } else {
+        selectedId = id;
     }
 }
 
@@ -47,7 +59,10 @@ function createGraph(domElement, collData, graphType) {
         labels : [ 'Timestamp', graphType.title ],
         title : graphType.title,
         clickCallback : function(e, x, pts) {
-            graphClickHandler(collData, x);
+            var id = findInstallationIdByTimestamp(collData, x);
+            if (id) {
+                graphClickHandler(collData, e, id);
+            }
         }
     };
     var graphData = [];
