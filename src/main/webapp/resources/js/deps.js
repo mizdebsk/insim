@@ -18,10 +18,11 @@ function loadDependencyGraph(data) {
     var s = '';
     for ( var pkg in data) {
         if (data.hasOwnProperty(pkg)) {
-            s += '"' + pkg + '";';
+            s += '"' + pkg + '"[tooltip="' + pkg + '"];';
             deps = data[pkg];
             deps.forEach(function(dep) {
-                s += '"' + pkg + '" -> "' + dep + '";';
+                s += '"' + pkg + '" -> "' + dep + '"';
+                s += '[tooltip="' + pkg + ' requires ' + dep + '"];';
             });
         }
     }
@@ -53,25 +54,25 @@ function createDependencyGraphDiff(data1, data2) {
 
     for ( var pkg in data) {
         if (data.hasOwnProperty(pkg)) {
-            s += '"' + pkg + '"';
+            s += '"' + pkg + '"[';
             if (!data1.hasOwnProperty(pkg)) {
-                s += "[color=green;fontcolor=green]";
+                s += 'color=green;fontcolor=green;';
             } else if (!data2.hasOwnProperty(pkg)) {
-                s += "[color=red;fontcolor=red]";
+                s += 'color=red;fontcolor=red;';
             }
-            s += ";";
+            s += 'tooltip="' + pkg + '"];';
             deps = data[pkg];
             deps.forEach(function(dep) {
-                s += '"' + pkg + '" -> "' + dep + '"';
+                s += '"' + pkg + '" -> "' + dep + '"[';
                 if (!data1.hasOwnProperty(pkg) || !data1.hasOwnProperty(dep)
                         || data1[pkg].indexOf(dep) == -1) {
-                    s += "[color=green]";
+                    s += 'color=green;';
                 } else if (!data2.hasOwnProperty(pkg)
                         || !data2.hasOwnProperty(dep)
                         || data2[pkg].indexOf(dep) == -1) {
-                    s += "[color=red]";
+                    s += 'color=red;';
                 }
-                s += ";";
+                s += 'tooltip="' + pkg + ' requires ' + dep + '"];';
             });
         }
     }
