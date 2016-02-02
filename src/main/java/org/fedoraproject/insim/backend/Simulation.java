@@ -85,7 +85,7 @@ class Simulation {
     public Map<PackageInfo, Set<PackageInfo>> getDependencyTree() throws HawkeyException {
         Map<PackageInfo, Set<PackageInfo>> map = new LinkedHashMap<>();
         for (PackageInfo pkg : instPkgs) {
-            Set<PackageInfo> deps = new LinkedHashSet<>(sack.resolveRequires(pkg.getName()));
+            Set<PackageInfo> deps = new LinkedHashSet<>(sack.resolveRequires(pkg.getName(), pkg.getArch()));
             deps.retainAll(instPkgs);
             map.put(pkg, deps);
         }
