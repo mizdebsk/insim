@@ -21,6 +21,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
   <h:head>
+    <h:outputStylesheet library="webjars/bootstrap/3.3.6/css" name="bootstrap.min.css" />
     <h:outputScript>jsf = { <ui:insert name="params"/> }</h:outputScript>
     <ui:insert name="resources"/>
     <title><ui:insert name="title"/></title>
@@ -29,15 +30,18 @@
   </h:head>
 
   <h:body>
-    <div id="container">
-      <h1><ui:insert name="title"/></h1>
-      <div id="menu">
-        <ul>
-          <li><a href="">Packages</a></li>
-          <li><a href="collections">Collections</a></li>
-        </ul>
+    <div class="container">
+      <div class="header clearfix">
+        <div class="navigation">
+          <ul class="nav nav-pills pull-right">
+            <li><a href="">Packages</a></li>
+            <li><a href="collections">Collections</a></li>
+          </ul>
+        </div>
+        <h3 class="text-muted">Insim</h3>
       </div>
       <div id="content">
+        <h1><ui:insert name="title"/></h1>
         <ui:insert name="content"/>
       </div>
     </div>

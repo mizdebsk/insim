@@ -24,13 +24,11 @@
   </h:panelGroup>
 
   <h:panelGroup rendered="#{not empty packages}">
-    <ul>
+    <div class="list-group">
       <ui:repeat var="package" value="#{packages}">
-        <li>
-          <h:outputLink value="package/#{package.name}">#{package.name}</h:outputLink>
-        </li>
+        <h:outputLink value="package/#{package.name}" styleClass="list-group-item">#{package.name}</h:outputLink>
       </ui:repeat>
-    </ul>
+    </div>
   </h:panelGroup>
 
 </ui:composition>

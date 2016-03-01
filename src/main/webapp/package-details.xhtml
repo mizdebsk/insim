@@ -33,7 +33,7 @@
   </ui:define>
 
   <ui:define name="title">
-    Insim – package #{packageView.name}
+    Package #{packageView.name}
   </ui:define>
 
   <ui:define name="content">
@@ -46,26 +46,35 @@
     </h:panelGroup>
 
     <h:panelGroup rendered="#{not empty package}">
-      <h:panelGrid columns="2" columnClasses="label,value">
-        <h:outputText value="Name:" />
-        <h:outputText value="#{package.name}" />
-        <h:outputText value="Baseline:" />
-        <h:outputText value="#{package.baseline.name}" />
-        <h:outputText value="Upstream URL:" />
-        <h:outputLink value="#{package.upstream}">
-          <h:outputText value="#{package.upstream}" />
-        </h:outputLink>
-      </h:panelGrid>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Package information</h3>
+        </div>
+        <h:panelGrid columns="2" styleClass="table">
+          <h:outputText value="Name:" />
+          <h:outputText value="#{package.name}" />
+          <h:outputText value="Baseline:" />
+          <h:outputText value="#{package.baseline.name}" />
+          <h:outputText value="Upstream URL:" />
+          <h:outputLink value="#{package.upstream}">
+            <h:outputText value="#{package.upstream}" />
+          </h:outputLink>
+        </h:panelGrid>
+      </div>
 
-      <table>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Latest statistics</h3>
+        </div>
+      <table class="table">
         <thead>
           <tr>
-            <td>Collection</td>
-            <td>Version</td>
-            <td>Install size</td>
-            <td>Download size</td>
-            <td>Dependency count</td>
-            <td>File count</td>
+            <th>Collection</th>
+            <th>Version</th>
+            <th>Install size</th>
+            <th>Download size</th>
+            <th>Dependency count</th>
+            <th>File count</th>
           </tr>
         </thead>
         <tbody>
@@ -88,6 +97,7 @@
           </tr>
         </tbody>
       </table>
+      </div>
 
       <ul>
         <li><h:selectBooleanCheckbox value="true" onclick="$('.chart-isz').toggle(checked)" />install size</li>
@@ -96,10 +106,17 @@
         <li><h:selectBooleanCheckbox value="true" onclick="$('.chart-fcn').toggle(checked)" />file count</li>
       </ul>
 
-      <canvas id="bar-isz" width="400" height="400"/>
-      <canvas id="bar-dsz" width="400" height="400"/>
-      <canvas id="bar-dcn" width="400" height="400"/>
-      <canvas id="bar-fcn" width="400" height="400"/>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Package information</h3>
+        </div>
+        <div class="panel-body">
+          <canvas id="bar-isz" width="400" height="400"/>
+          <canvas id="bar-dsz" width="400" height="400"/>
+          <canvas id="bar-dcn" width="400" height="400"/>
+          <canvas id="bar-fcn" width="400" height="400"/>
+        </div>
+      </div>
 
       <p>The following charts can be <strong>zoomed</strong>-in by clicking and dragging. To zoom-out, simply double-click
          on the chart.</p>
@@ -114,10 +131,38 @@
             Latest version-release:
             <code>#{collectionInfo.latestInstallation.version}-#{collectionInfo.latestInstallation.release}</code>
           </p>
-          <div class="chart-isz"/>
-          <div class="chart-dsz"/>
-          <div class="chart-dcn"/>
-          <div class="chart-fcn"/>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Installation size</h3>
+            </div>
+            <div class="panel-body">
+              <div class="chart-isz" />
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Download size</h3>
+            </div>
+            <div class="panel-body">
+              <div class="chart-dsz" />
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Dependency count</h3>
+            </div>
+            <div class="panel-body">
+              <div class="chart-dcn" />
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">File count</h3>
+            </div>
+            <div class="panel-body">
+              <div class="chart-fcn" />
+            </div>
+          </div>
         </div>
       </ui:repeat>
     </h:panelGroup>

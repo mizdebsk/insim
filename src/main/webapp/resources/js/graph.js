@@ -57,7 +57,6 @@ function graphClickHandler(collData, e, id) {
 function createGraph(domElement, collData, graphType) {
     var options = {
         labels : [ 'Timestamp', graphType.title ],
-        title : graphType.title,
         clickCallback : function(e, x, pts) {
             var id = findInstallationIdByTimestamp(collData, x);
             if (id) {

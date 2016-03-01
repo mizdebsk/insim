@@ -32,7 +32,7 @@
   </ui:define>
 
   <ui:define name="title">
-    Insim – installation details
+    Installation details
   </ui:define>
 
   <ui:define name="content">
@@ -43,30 +43,35 @@
     </h:panelGroup>
 
     <h:panelGroup rendered="#{not empty installation}">
-      <h:panelGrid columns="2" columnClasses="label,value">
-        <h:outputText value="Collection name:" />
-        <h:outputText value="#{installation.repository.collection.name}" />
-        <h:outputText value="Package name:" />
-        <h:outputText value="#{installation.package.name}" />
-        <h:outputText value="Package version:" />
-        <h:outputText value="#{installation.version}" />
-        <h:outputText value="Baseline:" />
-        <h:outputText value="#{installation.package.baseline.name}" />
-        <h:outputText value="Upstream URL:" />
-        <h:outputLink value="#{installation.package.upstream}">
-          <h:outputText value="#{installation.package.upstream}" />
-        </h:outputLink>
-        <h:outputText value="Is complete:" />
-        <h:outputText value="#{installation.complete}" />
-        <h:outputText value="Install size:" />
-        <h:outputText value="#{installation.installSize}" />
-        <h:outputText value="Download size:" />
-        <h:outputText value="#{installation.downloadSize}" />
-        <h:outputText value="Dependency count:" />
-        <h:outputText value="#{installation.dependencyCount}" />
-        <h:outputText value="File count:" />
-        <h:outputText value="#{installation.fileCount}" />
-      </h:panelGrid>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Installation information</h3>
+        </div>
+        <h:panelGrid columns="2" styleClass="table">
+          <h:outputText value="Collection name:" />
+          <h:outputText value="#{installation.repository.collection.name}" />
+          <h:outputText value="Package name:" />
+          <h:outputText value="#{installation.package.name}" />
+          <h:outputText value="Package version:" />
+          <h:outputText value="#{installation.version}" />
+          <h:outputText value="Baseline:" />
+          <h:outputText value="#{installation.package.baseline.name}" />
+          <h:outputText value="Upstream URL:" />
+          <h:outputLink value="#{installation.package.upstream}">
+            <h:outputText value="#{installation.package.upstream}" />
+          </h:outputLink>
+          <h:outputText value="Is complete:" />
+          <h:outputText value="#{installation.complete}" />
+          <h:outputText value="Install size:" />
+          <h:outputText value="#{installation.installSize}" />
+          <h:outputText value="Download size:" />
+          <h:outputText value="#{installation.downloadSize}" />
+          <h:outputText value="Dependency count:" />
+          <h:outputText value="#{installation.dependencyCount}" />
+          <h:outputText value="File count:" />
+          <h:outputText value="#{installation.fileCount}" />
+        </h:panelGrid>
+      </div>
 
       <h2>Dependency graph</h2>
       <p>The following is a dependency graph. Nodes represent packages and edges – requires between
@@ -74,7 +79,7 @@
         are not included in the graph. Big graphs may <strong>fail to render</strong> due to memory constrains.
         You can hover nodes and edges to <strong>tooltip</strong> with some information – useful especially when graph
         is not readable due to its complexity. <strong>Soft-dependencies</strong> are not shown in the graph (yet).</p>
-      <div id="jsviz"/>
+      <div id="jsviz" />
     </h:panelGroup>
   </ui:define>
 

@@ -21,7 +21,7 @@
                 template="/WEB-INF/templates/default.xhtml">
 
   <ui:define name="title">
-    Insim – collections
+    Collections
   </ui:define>
 
   <ui:define name="content">
@@ -29,13 +29,11 @@
       <em>No collections.</em>
     </h:panelGroup>
     <h:panelGroup rendered="#{not empty collections}">
-      <ul>
+      <div class="list-group">
         <ui:repeat id="tbl" var="collection" value="#{collections}">
-          <li>
-            <h:outputLink value="collection/#{collection.name}">#{collection.name}</h:outputLink>
-          </li>
+          <h:outputLink value="collection/#{collection.name}" styleClass="list-group-item">#{collection.name}</h:outputLink>
         </ui:repeat>
-      </ul>
+      </div>
     </h:panelGroup>
   </ui:define>
 
