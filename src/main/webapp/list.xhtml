@@ -17,23 +17,20 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:h="http://java.sun.com/jsf/html">
 
   <h:panelGroup rendered="#{empty packages}">
     <em>No packages.</em>
   </h:panelGroup>
 
-  <h:form>
-    <p:dataTable var="package" value="#{packages}"
-                 rendered="#{not empty packages}" styleClass="simpletablestyle"
-                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-                 paginator="true" rows="100">
-      <p:column>
-        <f:facet name="header">Name</f:facet>
-        <h:outputLink value="package/#{package.name}">#{package.name}</h:outputLink>
-      </p:column>
-    </p:dataTable>
-  </h:form>
+  <h:panelGroup rendered="#{not empty packages}">
+    <ul>
+      <ui:repeat var="package" value="#{packages}">
+        <li>
+          <h:outputLink value="package/#{package.name}">#{package.name}</h:outputLink>
+        </li>
+      </ui:repeat>
+    </ul>
+  </h:panelGroup>
 
 </ui:composition>

@@ -18,7 +18,6 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
                 template="/WEB-INF/templates/default.xhtml">
 
@@ -27,6 +26,7 @@
   </ui:define>
 
   <ui:define name="resources">
+    <h:outputScript library="webjars/jquery/2.2.1" name="jquery.min.js" />
     <h:outputScript library="webjars/chartjs/1.0.2" name="Chart.min.js"/>
     <h:outputScript library="webjars/dygraphs/1.1.1" name="dygraph-combined.js"/>
     <h:outputScript library="js" name="graph.js" />
@@ -57,30 +57,37 @@
         </h:outputLink>
       </h:panelGrid>
 
-      <p:dataTable var="collectionInfo" value="#{packageView.collectionInfos}">
-        <p:column headerText="Collection">
-          <h:outputText value="#{collectionInfo.collection.name}" />
-          <f:facet name="footer">Upstream</f:facet>
-        </p:column>
-        <p:column headerText="Version">
-          <h:outputText value="#{collectionInfo.latestInstallation.version}" />
-          <f:facet name="footer"><h:outputText value="#{package.upstreamVersion}" /></f:facet>
-        </p:column>
-        <p:column headerText="Install size">
-          <h:outputText value="#{collectionInfo.latestInstallation.installSize}" />
-          <f:facet name="footer"><h:outputText value="#{package.upstreamInstallSize}" /></f:facet>
-        </p:column>
-        <p:column headerText="Download size">
-          <h:outputText value="#{collectionInfo.latestInstallation.downloadSize}" />
-          <f:facet name="footer"><h:outputText value="#{package.upstreamDownloadSize}" /></f:facet>
-        </p:column>
-        <p:column headerText="Dependency count">
-          <h:outputText value="#{collectionInfo.latestInstallation.dependencyCount}" />
-        </p:column>
-        <p:column headerText="File count">
-          <h:outputText value="#{collectionInfo.latestInstallation.fileCount}" />
-        </p:column>
-      </p:dataTable>
+      <table>
+        <thead>
+          <tr>
+            <td>Collection</td>
+            <td>Version</td>
+            <td>Install size</td>
+            <td>Download size</td>
+            <td>Dependency count</td>
+            <td>File count</td>
+          </tr>
+        </thead>
+        <tbody>
+          <ui:repeat var="collectionInfo" value="#{packageView.collectionInfos}">
+            <tr>
+              <td><h:outputText value="#{collectionInfo.collection.name}" /></td>
+              <td><h:outputText value="#{collectionInfo.latestInstallation.version}" /></td>
+              <td><h:outputText value="#{collectionInfo.latestInstallation.installSize}" /></td>
+              <td><h:outputText value="#{collectionInfo.latestInstallation.downloadSize}" /></td>
+              <td><h:outputText value="#{collectionInfo.latestInstallation.dependencyCount}" /></td>
+              <td><h:outputText value="#{collectionInfo.latestInstallation.fileCount}" /></td>
+            </tr>
+          </ui:repeat>
+          <tr>
+            <td>Upstream</td>
+            <td><h:outputText value="#{package.upstreamVersion}" /></td>
+            <td><h:outputText value="#{package.upstreamInstallSize}" /></td>
+            <td><h:outputText value="#{package.upstreamDownloadSize}" /></td>
+            <td colspan="2" />
+          </tr>
+        </tbody>
+      </table>
 
       <ul>
         <li><h:selectBooleanCheckbox value="true" onclick="$('.chart-isz').toggle(checked)" />install size</li>

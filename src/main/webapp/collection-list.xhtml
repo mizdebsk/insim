@@ -18,7 +18,6 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/default.xhtml">
 
   <ui:define name="title">
@@ -29,17 +28,15 @@
     <h:panelGroup rendered="#{empty collections}">
       <em>No collections.</em>
     </h:panelGroup>
-    <h:form>
-      <p:dataTable id="tbl" var="collection" value="#{collections}"
-                   rendered="#{not empty collections}" styleClass="simpletablestyle"
-                   paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-                   paginator="true" rows="100">
-        <p:column>
-          <f:facet name="header">Name</f:facet>
-          <h:outputLink value="collection/#{collection.name}">#{collection.name}</h:outputLink>
-        </p:column>
-      </p:dataTable>
-    </h:form>
+    <h:panelGroup rendered="#{not empty collections}">
+      <ul>
+        <ui:repeat id="tbl" var="collection" value="#{collections}">
+          <li>
+            <h:outputLink value="collection/#{collection.name}">#{collection.name}</h:outputLink>
+          </li>
+        </ui:repeat>
+      </ul>
+    </h:panelGroup>
   </ui:define>
 
 </ui:composition>

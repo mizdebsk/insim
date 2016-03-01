@@ -18,7 +18,6 @@
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
   <h:head>
@@ -33,10 +32,10 @@
     <div id="container">
       <h1><ui:insert name="title"/></h1>
       <div id="menu">
-        <p:tabMenu activeIndex="-1">
-          <p:menuitem value="Packages" url="" icon="ui-icon-search" />
-          <p:menuitem value="Collections" url="collections" icon="ui-icon-search" />
-        </p:tabMenu>
+        <ul>
+          <li><a href="">Packages</a></li>
+          <li><a href="collections">Collections</a></li>
+        </ul>
       </div>
       <div id="content">
         <ui:insert name="content"/>
