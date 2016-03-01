@@ -75,16 +75,47 @@ function createGraph(domElement, collData, graphType) {
 }
 
 function loadGraphs(data) {
+    var bar = {};
     for ( var collName in data) {
         if (data.hasOwnProperty(collName)) {
-            graphTypes.forEach(function(graphType) {
-                $(".coll-" + collName).find(".chart-" + graphType.id).each(
-                        function() {
-                            createGraph(this, data[collName], graphType);
-                        });
-            });
+            var collData = data[collName];
+            graphTypes
+                    .forEach(function(graphType) {
+                        $(".coll-" + collName).find(".chart-" + graphType.id)
+                                .each(function() {
+                                    createGraph(this, collData, graphType);
+                                });
+                        if (!bar[graphType.id]) {
+                            bar[graphType.id] = {
+                                labels : [],
+                                datasets : [ {
+                                    data : []
+                                } ]
+                            };
+                        }
+                        if (collData.length > 0) {
+                            bar[graphType.id]['labels'].push(collName);
+                            bar[graphType.id]['datasets'][0]['data']
+                                    .push(collData[collData.length - 1][graphType.index]);
+                        }
+                    });
         }
     }
+    graphTypes.forEach(function(graphType) {
+        $("#bar-" + graphType.id).each(function() {
+            var ctx = this.getContext('2d');
+            var chart = new Chart(ctx).Bar(bar[graphType.id]);
+            this.onclick = function(e) {
+                var activeBars = chart.getBarsAtEvent(e);
+                if (activeBars.length > 0) {
+                    var collName = activeBars[0]['label'];
+                    var collData = data[collName];
+                    var id = collData[collData.length - 1][0];
+                    graphClickHandler(collData, e, id);
+                }
+            };
+        });
+    });
 }
 
 $(document).ready(function() {

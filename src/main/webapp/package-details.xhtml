@@ -27,6 +27,7 @@
   </ui:define>
 
   <ui:define name="resources">
+    <h:outputScript library="webjars/chartjs/1.0.2" name="Chart.min.js"/>
     <h:outputScript library="webjars/dygraphs/1.1.1" name="dygraph-combined.js"/>
     <h:outputScript library="js" name="graph.js" />
   </ui:define>
@@ -88,12 +89,10 @@
         <li><h:selectBooleanCheckbox value="true" onclick="$('.chart-fcn').toggle(checked)" />file count</li>
       </ul>
 
-      <ui:repeat var="chart" value="#{packageView.charts}">
-        <div class="chart-#{chart.id}">
-          <p:chart type="bar" model="#{chart.model}"
-                   style="width:#{chart.width}px;margin-left:50px;height:300px" />
-        </div>
-      </ui:repeat>
+      <canvas id="bar-isz" width="400" height="400"/>
+      <canvas id="bar-dsz" width="400" height="400"/>
+      <canvas id="bar-dcn" width="400" height="400"/>
+      <canvas id="bar-fcn" width="400" height="400"/>
 
       <p>The following charts can be <strong>zoomed</strong>-in by clicking and dragging. To zoom-out, simply double-click
          on the chart.</p>
