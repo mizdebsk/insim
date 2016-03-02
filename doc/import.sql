@@ -18,10 +18,10 @@ INSERT INTO BASELINE_PKGS(BASELINE_NAME, PKGS) VALUES
     ('eclipse', 'eclipse-platform'), ('eclipse', 'java-1.8.0-openjdk-devel');
 
 INSERT INTO COLLECTION(NAME, LOCATION) VALUES
-    ('f21', 'https://kojipkgs.fedoraproject.org/repos/f21-build/latest/{arch}/'),
     ('f22', 'https://kojipkgs.fedoraproject.org/repos/f22-build/latest/{arch}/'),
     ('f23', 'https://kojipkgs.fedoraproject.org/repos/f23-build/latest/{arch}/'),
-    ('f24', 'https://kojipkgs.fedoraproject.org/repos/f24-build/latest/{arch}/');
+    ('f24', 'https://kojipkgs.fedoraproject.org/repos/f24-build/latest/{arch}/'),
+    ('f25', 'https://kojipkgs.fedoraproject.org/repos/f21-build/latest/{arch}/');
 
 INSERT INTO PACKAGE(NAME, UPSTREAM, UPSTREAMDOWNLOADSIZE, UPSTREAMINSTALLSIZE, UPSTREAMVERSION, BASELINE_NAME) VALUES
     ('maven', 'http://maven.apache.org/', 8042383, 9533094, '3.3.3', 'java-devel'),
@@ -35,7 +35,6 @@ INSERT INTO PACKAGE(NAME, UPSTREAM, UPSTREAMDOWNLOADSIZE, UPSTREAMINSTALLSIZE, U
     ('gradle-local', '', 0, 0, '0', 'buildsys-build');
 
 INSERT INTO COLLECTION_PACKAGE(PACKAGES_NAME, COLLECTIONS_NAME)
-    SELECT PACKAGE.NAME, COLLECTION.NAME FROM PACKAGE, COLLECTION
-    WHERE PACKAGE.NAME != 'gradle' OR COLLECTION.NAME != 'f21';
+    SELECT PACKAGE.NAME, COLLECTION.NAME FROM PACKAGE, COLLECTION;
 
 COMMIT;
