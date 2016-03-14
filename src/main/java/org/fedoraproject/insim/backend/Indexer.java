@@ -81,7 +81,7 @@ public class Indexer {
         inst.setPackage(pkg);
 
         Simulation sim = new Simulation(sack, pkg.getName());
-        sim.addBaseDeps(pkg.getBaseline().getPackages());
+        sim.addBaseDeps(pkg.getBaseline().getAllPackages());
         if (!sim.run()) {
             inst.setComplete(false);
             instDao.persist(inst);
