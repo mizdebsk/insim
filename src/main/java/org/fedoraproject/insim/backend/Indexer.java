@@ -80,8 +80,9 @@ public class Indexer {
         inst.setRepository(repo);
         inst.setPackage(pkg);
 
-        Simulation sim = new Simulation(sack, pkg.getName());
+        Simulation sim = new Simulation(sack);
         sim.addBaseDeps(pkg.getBaseline().getAllPackages());
+        sim.addInstDeps(pkg.getInstallRpms());
         if (!sim.run()) {
             inst.setComplete(false);
             instDao.persist(inst);

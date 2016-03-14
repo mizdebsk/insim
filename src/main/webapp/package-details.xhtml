@@ -57,6 +57,18 @@
           <h:outputLink value="baseline/#{package.baseline.name}">
             <h:outputText value="#{package.baseline.name}" />
           </h:outputLink>
+          <h:outputText value="Is metapackage:" />
+          <h:outputText value="#{package.metapackage}" />
+          <h:outputText value="RPMs:" />
+          <h:panelGroup>
+            <ul>
+              <ui:repeat var="rpm" value="#{package.installRpms}">
+                <li>
+                  <h:outputText value="#{rpm}" />
+                </li>
+              </ui:repeat>
+            </ul>
+          </h:panelGroup>
           <h:outputText value="Upstream URL:" />
           <h:outputLink value="#{package.upstream}">
             <h:outputText value="#{package.upstream}" />

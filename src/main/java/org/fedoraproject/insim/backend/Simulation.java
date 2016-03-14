@@ -32,18 +32,21 @@ import org.fedoraproject.javadeptools.hawkey.Sack;
  */
 class Simulation {
     private final Sack sack;
-    private final String pkg;
     private final Set<String> baseDeps = new LinkedHashSet<>();
+    private final Set<String> instDeps = new LinkedHashSet<>();
     private final Set<PackageInfo> basePkgs = new LinkedHashSet<>();
     private final Set<PackageInfo> instPkgs = new LinkedHashSet<>();
 
-    public Simulation(Sack sack, String pkg) {
+    public Simulation(Sack sack) {
         this.sack = sack;
-        this.pkg = pkg;
     }
 
     public void addBaseDeps(Collection<String> deps) {
         baseDeps.addAll(deps);
+    }
+
+    public void addInstDeps(Collection<String> deps) {
+        instDeps.addAll(deps);
     }
 
     public Set<PackageInfo> getBasePkgs() {
@@ -68,7 +71,9 @@ class Simulation {
             }
             basePkgs.addAll(goal.listInstalls());
 
-            goal.install(pkg);
+            for (String dep : instDeps) {
+                goal.install(dep);
+            }
             ok = goal.run();
             if (!ok) {
                 return false;

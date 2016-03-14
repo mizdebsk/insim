@@ -16,8 +16,10 @@
 package org.fedoraproject.insim.model;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -41,6 +43,8 @@ public class Package implements Serializable {
     private Long upstreamDownloadSize;
     @ManyToMany(mappedBy = "packages")
     private List<Collection> collections;
+    @ElementCollection
+    private List<String> rpms;
 
     public String getName() {
         return this.name;
@@ -96,6 +100,22 @@ public class Package implements Serializable {
 
     public void setCollections(List<Collection> collections) {
         this.collections = collections;
+    }
+
+    public List<String> getRpms() {
+        return rpms;
+    }
+
+    public void setRpms(List<String> rpms) {
+        this.rpms = rpms;
+    }
+
+    public boolean isMetapackage() {
+        return !getRpms().isEmpty();
+    }
+
+    public List<String> getInstallRpms() {
+        return isMetapackage() ? getRpms() : Collections.singletonList(getName());
     }
 
 }

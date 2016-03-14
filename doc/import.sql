@@ -4,7 +4,8 @@ INSERT INTO BASELINE(NAME) VALUES
     ('buildsys-build'),
     ('java'),
     ('java-devel'),
-    ('eclipse');
+    ('eclipse'),
+    ('empty');
 
 INSERT INTO BASELINE_PKGS(BASELINE_NAME, PKGS) VALUES
     ('buildsys-build', 'bash'), ('buildsys-build', 'bzip2'), ('buildsys-build', 'coreutils'), ('buildsys-build', 'cpio'),
@@ -35,7 +36,48 @@ INSERT INTO PACKAGE(NAME, UPSTREAM, UPSTREAMDOWNLOADSIZE, UPSTREAMINSTALLSIZE, U
     ('groovy', 'http://www.groovy-lang.org/', 31968599, 35756588, '2.4.3', 'java-devel'),
     ('freemind', 'http://sourceforge.net/projects/freemind/', 37583505, 41406322, '1.0.1', 'java'),
     ('maven-local', '', 0, 0, '0', 'buildsys-build'),
-    ('gradle-local', '', 0, 0, '0', 'buildsys-build');
+    ('gradle-local', '', 0, 0, '0', 'buildsys-build'),
+    ('core', '', 0, 0, '0', 'empty');
+
+INSERT INTO PACKAGE_RPMS(PACKAGE_NAME, RPMS) VALUES
+    ('core', 'audit'),
+    ('core', 'basesystem'),
+    ('core', 'bash'),
+    ('core', 'coreutils'),
+    ('core', 'cronie'),
+    ('core', 'curl'),
+    ('core', 'dhcp-client'),
+    ('core', 'dnf'),
+    ('core', 'dnf-yum'),
+    ('core', 'e2fsprogs'),
+    ('core', 'filesystem'),
+    ('core', 'glibc'),
+    ('core', 'grubby'),
+    ('core', 'hostname'),
+    ('core', 'initscripts'),
+    ('core', 'iproute'),
+    ('core', 'iputils'),
+    ('core', 'kbd'),
+    ('core', 'less'),
+    ('core', 'man-db'),
+    ('core', 'ncurses'),
+    ('core', 'openssh-clients'),
+    ('core', 'openssh-server'),
+    ('core', 'parted'),
+    ('core', 'passwd'),
+    ('core', 'plymouth'),
+    ('core', 'policycoreutils'),
+    ('core', 'procps-ng'),
+    ('core', 'rootfiles'),
+    ('core', 'rpm'),
+    ('core', 'selinux-policy-targeted'),
+    ('core', 'setup'),
+    ('core', 'shadow-utils'),
+    ('core', 'sudo'),
+    ('core', 'systemd'),
+    ('core', 'systemd-udev'),
+    ('core', 'util-linux'),
+    ('core', 'vim-minimal');
 
 INSERT INTO COLLECTION_PACKAGE(PACKAGES_NAME, COLLECTIONS_NAME)
     SELECT PACKAGE.NAME, COLLECTION.NAME FROM PACKAGE, COLLECTION;
