@@ -42,8 +42,7 @@ class Simulation {
         this.pkg = pkg;
     }
 
-    public void setBaseDeps(Collection<String> deps) {
-        baseDeps.clear();
+    public void addBaseDeps(Collection<String> deps) {
         baseDeps.addAll(deps);
     }
 

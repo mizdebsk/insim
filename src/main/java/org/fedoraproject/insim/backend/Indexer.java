@@ -71,7 +71,8 @@ public class Indexer {
                 + map.entrySet().stream()
                         .map(e -> "\"" + e.getKey().getName() + "\":[" + e.getValue().stream()
                                 .map(dep -> "\"" + dep.getName() + "\"").collect(Collectors.joining(",")) + "]")
-                .collect(Collectors.joining(",")) + "}";
+                        .collect(Collectors.joining(","))
+                + "}";
     }
 
     private void newInstallation(Sack sack, Repository repo, Package pkg) throws HawkeyException {
@@ -80,7 +81,7 @@ public class Indexer {
         inst.setPackage(pkg);
 
         Simulation sim = new Simulation(sack, pkg.getName());
-        sim.setBaseDeps(pkg.getBaseline().getPackages());
+        sim.addBaseDeps(pkg.getBaseline().getPackages());
         if (!sim.run()) {
             inst.setComplete(false);
             instDao.persist(inst);

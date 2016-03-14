@@ -15,7 +15,10 @@ INSERT INTO BASELINE_PKGS(BASELINE_NAME, PKGS) VALUES
     ('buildsys-build', 'unzip'), ('buildsys-build', 'util-linux'), ('buildsys-build', 'which'), ('buildsys-build', 'xz'),
     ('java', 'java-1.8.0-openjdk'),
     ('java-devel', 'java-1.8.0-openjdk-devel'),
-    ('eclipse', 'eclipse-platform'), ('eclipse', 'java-1.8.0-openjdk-devel');
+    ('eclipse', 'eclipse-platform');
+
+INSERT INTO BASELINE_BASELINE(BASELINE_NAME, PARENTS_NAME) VALUES
+    ('eclipse', 'java-devel');
 
 INSERT INTO COLLECTION(NAME, LOCATION) VALUES
     ('f22', 'https://kojipkgs.fedoraproject.org/repos/f22-build/latest/{arch}/'),

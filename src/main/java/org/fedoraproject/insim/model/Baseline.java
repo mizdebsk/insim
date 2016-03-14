@@ -16,11 +16,16 @@
 package org.fedoraproject.insim.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 /**
  * @author Mikolaj Izdebski
@@ -36,6 +41,9 @@ public class Baseline implements Serializable {
     @ElementCollection
     private List<String> pkgs;
 
+    @ManyToMany
+    private List<Baseline> parents;
+
     public String getName() {
         return name;
     }
@@ -50,6 +58,30 @@ public class Baseline implements Serializable {
 
     public void setPackages(List<String> pkgs) {
         this.pkgs = pkgs;
+    }
+
+    public List<Baseline> getParents() {
+        return parents;
+    }
+
+    public void setParents(List<Baseline> parents) {
+        this.parents = parents;
+    }
+
+    public List<String> getAllPackages() {
+        return getAllPackages(new TreeSet<>(), new LinkedHashSet<>());
+    }
+
+    private List<String> getAllPackages(Set<String> pset, Set<Baseline> visited) {
+        if (!visited.contains(this)) {
+            pset.addAll(getPackages());
+            visited.add(this);
+            for (Baseline b : parents) {
+                b.getAllPackages(pset, visited);
+            }
+            visited.remove(this);
+        }
+        return new ArrayList<>(pset);
     }
 
 }
