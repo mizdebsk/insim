@@ -55,7 +55,9 @@
           <h:outputText value="Package version:" />
           <h:outputText value="#{installation.version}" />
           <h:outputText value="Baseline:" />
-          <h:outputText value="#{installation.package.baseline.name}" />
+          <h:outputLink value="baseline/#{installation.package.baseline.name}">
+            <h:outputText value="#{installation.package.baseline.name}" />
+          </h:outputLink>
           <h:outputText value="Upstream URL:" />
           <h:outputLink value="#{installation.package.upstream}">
             <h:outputText value="#{installation.package.upstream}" />

@@ -54,7 +54,9 @@
           <h:outputText value="Name:" />
           <h:outputText value="#{package.name}" />
           <h:outputText value="Baseline:" />
-          <h:outputText value="#{package.baseline.name}" />
+          <h:outputLink value="baseline/#{package.baseline.name}">
+            <h:outputText value="#{package.baseline.name}" />
+          </h:outputLink>
           <h:outputText value="Upstream URL:" />
           <h:outputLink value="#{package.upstream}">
             <h:outputText value="#{package.upstream}" />

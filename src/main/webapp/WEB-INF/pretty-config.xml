@@ -47,5 +47,10 @@
     <view-id value="/installation-diff.jsf" />
     <action>#{installationDiffView.load}</action>
   </url-mapping>
+  <url-mapping id="baseline-details">
+    <pattern value="/baseline/#{baselineView.name}" />
+    <view-id value="/baseline-details.jsf" />
+    <action>#{baselineView.load}</action>
+  </url-mapping>
 
 </pretty-config>

@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2015 Red Hat, Inc.
+ * Copyright (c) 2016 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,29 +19,29 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
-import org.fedoraproject.insim.data.CollectionDAO;
-import org.fedoraproject.insim.model.Collection;
+import org.fedoraproject.insim.data.BaselineDAO;
+import org.fedoraproject.insim.model.Baseline;
 
 /**
  * @author Mikolaj Izdebski
  */
 @ManagedBean
 @ViewScoped
-public class CollectionView {
+public class BaselineView {
 
     @Inject
-    private CollectionDAO dao;
+    private BaselineDAO dao;
 
-    private Collection collection;
+    private Baseline baseline;
 
     private String name;
 
-    public Collection getCollection() {
-        return collection;
+    public Baseline getBaseline() {
+        return baseline;
     }
 
     public void load() {
-        collection = dao.getByName(name);
+        baseline = dao.getByName(name);
     }
 
     public String getName() {
