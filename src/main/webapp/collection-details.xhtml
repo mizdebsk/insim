@@ -28,12 +28,12 @@
   <ui:define name="content">
     <c:set var="packages"
            value="#{collectionView.collection.packages}" />
-    <h:panelGroup rendered="#{empty collectionView.collection}">
+    <h:panelGroup rendered="#{collectionView.collection == null}">
       <em>Collection #{collectionView.name} is not known to Insim.
         You can contact Insim administrators in order to request adding this
         collection.</em>
     </h:panelGroup>
-    <h:panelGroup rendered="#{not empty collectionView.collection}">
+    <h:panelGroup rendered="#{collectionView.collection != null}">
       <ui:include src="list.xhtml" />
     </h:panelGroup>
   </ui:define>
