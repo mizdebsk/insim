@@ -65,7 +65,7 @@
               </ui:repeat>
             </ul>
           </h:panelGroup>
-          <h:outputText value="Parents:" />
+          <h:outputText value="Based on:" />
           <h:panelGroup>
             <ul class="list-inline">
               <ui:repeat var="parent" value="#{module.parents}">
@@ -77,10 +77,10 @@
               </ui:repeat>
             </ul>
           </h:panelGroup>
-          <h:outputText value="All RPMs:" />
+          <h:outputText value="Baseline RPMs:" />
           <h:panelGroup>
             <ul class="list-inline">
-              <ui:repeat var="pkg" value="#{module.allRpms}">
+              <ui:repeat var="pkg" value="#{module.baselineRpms}">
                 <li>
                   <h:outputText value="#{pkg}" />
                 </li>

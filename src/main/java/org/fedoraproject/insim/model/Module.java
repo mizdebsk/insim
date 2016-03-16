@@ -89,10 +89,6 @@ public class Module implements Serializable {
         return getParentRpms(new TreeSet<>(), new LinkedHashSet<>());
     }
 
-    public List<String> getAllRpms() {
-        return getParentRpms(new TreeSet<>(getInstallRpms()), new LinkedHashSet<>());
-    }
-
     private List<String> getParentRpms(Set<String> rpmSet, Set<Module> visited) {
         if (visited.add(this)) {
             for (Module mod : parents) {
