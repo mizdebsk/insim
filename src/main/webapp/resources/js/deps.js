@@ -73,6 +73,9 @@ function fetchGraphData(id, handler) {
 }
 
 function depsOnload() {
+    $('.datatable').dataTable({
+        "order" : [ [ 0, "asc" ] ]
+    });
     if (jsf.installationId) {
         fetchGraphData(jsf.installationId, function(data) {
             createDependencyGraph(data, data);
