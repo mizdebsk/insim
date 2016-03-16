@@ -39,6 +39,7 @@ import org.fedoraproject.insim.model.DependencyGraph;
 import org.fedoraproject.insim.model.Installation;
 import org.fedoraproject.insim.model.Package;
 import org.fedoraproject.insim.model.Repository;
+import org.fedoraproject.insim.model.Rpm;
 import org.fedoraproject.javadeptools.hawkey.HawkeyException;
 import org.fedoraproject.javadeptools.hawkey.PackageInfo;
 import org.fedoraproject.javadeptools.hawkey.Sack;
@@ -100,6 +101,17 @@ public class Indexer {
                 inst.setVersion(dep.getVersion());
                 inst.setRelease(dep.getRelease());
             }
+            Rpm rpm = new Rpm();
+            rpm.setInstallation(inst);
+            rpm.setName(dep.getName());
+            rpm.setEpoch(dep.getEpoch());
+            rpm.setVersion(dep.getVersion());
+            rpm.setRelease(dep.getRelease());
+            rpm.setArch(dep.getArch());
+            rpm.setInstallSize(dep.getInstallSize());
+            rpm.setDownloadSize(dep.getDownloadSize());
+            rpm.setFileCount(dep.getFileCount());
+            inst.addRpm(rpm);
         }
 
         inst.setComplete(true);

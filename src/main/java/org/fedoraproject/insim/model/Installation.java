@@ -16,11 +16,16 @@
 package org.fedoraproject.insim.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  * @author Mikolaj Izdebski
@@ -44,6 +49,8 @@ public class Installation implements Serializable {
     private Long downloadSize;
     private Integer dependencyCount;
     private Integer fileCount;
+    @OneToMany(mappedBy = "installation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Rpm> rpms;
 
     public Integer getId() {
         return this.id;
@@ -123,6 +130,20 @@ public class Installation implements Serializable {
 
     public void setFileCount(Integer fileCount) {
         this.fileCount = fileCount;
+    }
+
+    public List<Rpm> getRpms() {
+        return rpms;
+    }
+
+    public void setRpms(List<Rpm> rpms) {
+        this.rpms = rpms;
+    }
+
+    public void addRpm(Rpm rpm) {
+        if (rpms == null)
+            rpms = new ArrayList<>();
+        rpms.add(rpm);
     }
 
 }
