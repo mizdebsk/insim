@@ -110,6 +110,9 @@ function loadGraphs(data) {
             var dataWidth = bar[graphType.id]['datasets'][0]['data'].length;
             // XXX don't hardcode sizes here
             $(this).width(150 + 40 * dataWidth);
+            $(this).parent().width($(this).width());
+            // FIXME this should be in CSS
+            $(this).parent().css('float', 'left');
             var ctx = this.getContext('2d');
             var chart = new Chart(ctx).Bar(bar[graphType.id]);
             this.onclick = function(e) {
