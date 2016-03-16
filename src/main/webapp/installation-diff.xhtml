@@ -47,11 +47,19 @@
     <h:panelGroup rendered="#{not empty oldInstallation and not empty newInstallation}">
       <h:panelGrid columns="3" columnClasses="label,value,value">
         <h:outputText value="Collection name:" />
-        <h:outputText value="#{oldInstallation.repository.collection.name}" />
-        <h:outputText value="#{newInstallation.repository.collection.name}" />
+        <h:outputLink value="collection/#{oldInstallation.repository.collection.name}">
+          <h:outputText value="#{oldInstallation.repository.collection.name}" />
+        </h:outputLink>
+        <h:outputLink value="collection/#{newInstallation.repository.collection.name}">
+          <h:outputText value="#{newInstallation.repository.collection.name}" />
+        </h:outputLink>
         <h:outputText value="Package name:" />
-        <h:outputText value="#{oldInstallation.package.name}" />
-        <h:outputText value="#{newInstallation.package.name}" />
+        <h:outputLink value="package/#{oldInstallation.package.name}">
+          <h:outputText value="#{oldInstallation.package.name}" />
+        </h:outputLink>
+        <h:outputLink value="package/#{newInstallation.package.name}">
+          <h:outputText value="#{newInstallation.package.name}" />
+        </h:outputLink>
         <h:outputText value="Package version:" />
         <h:outputText value="#{oldInstallation.version}" />
         <h:outputText value="#{newInstallation.version}" />

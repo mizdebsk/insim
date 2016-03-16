@@ -52,9 +52,13 @@
         </div>
         <h:panelGrid columns="2" styleClass="table">
           <h:outputText value="Collection name:" />
-          <h:outputText value="#{installation.repository.collection.name}" />
+          <h:outputLink value="collection/#{installation.repository.collection.name}">
+            <h:outputText value="#{installation.repository.collection.name}" />
+          </h:outputLink>
           <h:outputText value="Package name:" />
-          <h:outputText value="#{installation.package.name}" />
+          <h:outputLink value="package/#{installation.package.name}">
+            <h:outputText value="#{installation.package.name}" />
+          </h:outputLink>
           <h:outputText value="Package version:" />
           <h:outputText value="#{installation.version}" />
           <h:outputText value="Baseline:" />
