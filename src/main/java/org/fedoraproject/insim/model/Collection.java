@@ -36,7 +36,7 @@ public class Collection implements Serializable {
     private String location;
 
     @ManyToMany
-    private List<Package> packages;
+    private List<Module> modules;
 
     public String getName() {
         return this.name;
@@ -54,12 +54,12 @@ public class Collection implements Serializable {
         this.location = location;
     }
 
-    public List<Package> getPackages() {
-        return packages;
+    public List<Module> getModules() {
+        return modules;
     }
 
-    public void setPackages(List<Package> packages) {
-        this.packages = packages;
+    public void setModules(List<Module> modules) {
+        this.modules = modules;
     }
 
 }

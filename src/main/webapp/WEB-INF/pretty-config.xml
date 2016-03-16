@@ -19,18 +19,18 @@
                xsi:schemaLocation="http://ocpsoft.org/schema/rewrite-config-prettyfaces
                                    http://ocpsoft.org/xml/ns/prettyfaces/rewrite-config-prettyfaces.xsd">
 
-  <url-mapping id="package-list">
+  <url-mapping id="module-list">
     <pattern value="/" />
-    <view-id value="/package-list.jsf" />
+    <view-id value="/module-list.jsf" />
   </url-mapping>
   <url-mapping id="collection-list">
     <pattern value="/collections" />
     <view-id value="/collection-list.jsf" />
   </url-mapping>
-  <url-mapping id="package-details">
-    <pattern value="/package/#{packageView.name}" />
-    <view-id value="/package-details.jsf" />
-    <action>#{packageView.load}</action>
+  <url-mapping id="module-details">
+    <pattern value="/module/#{moduleView.name}" />
+    <view-id value="/module-details.jsf" />
+    <action>#{moduleView.load}</action>
   </url-mapping>
   <url-mapping id="collection-details">
     <pattern value="/collection/#{collectionView.name}" />
@@ -46,11 +46,6 @@
     <pattern value="/installation/diff/#{installationDiffView.oldId}/#{installationDiffView.newId}" />
     <view-id value="/installation-diff.jsf" />
     <action>#{installationDiffView.load}</action>
-  </url-mapping>
-  <url-mapping id="baseline-details">
-    <pattern value="/baseline/#{baselineView.name}" />
-    <view-id value="/baseline-details.jsf" />
-    <action>#{baselineView.load}</action>
   </url-mapping>
 
 </pretty-config>

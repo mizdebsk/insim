@@ -53,29 +53,22 @@
         <h:outputLink value="collection/#{newInstallation.repository.collection.name}">
           <h:outputText value="#{newInstallation.repository.collection.name}" />
         </h:outputLink>
-        <h:outputText value="Package name:" />
-        <h:outputLink value="package/#{oldInstallation.package.name}">
-          <h:outputText value="#{oldInstallation.package.name}" />
+        <h:outputText value="Module name:" />
+        <h:outputLink value="module/#{oldInstallation.module.name}">
+          <h:outputText value="#{oldInstallation.module.name}" />
         </h:outputLink>
-        <h:outputLink value="package/#{newInstallation.package.name}">
-          <h:outputText value="#{newInstallation.package.name}" />
+        <h:outputLink value="module/#{newInstallation.module.name}">
+          <h:outputText value="#{newInstallation.module.name}" />
         </h:outputLink>
-        <h:outputText value="Package version:" />
+        <h:outputText value="Module version:" />
         <h:outputText value="#{oldInstallation.version}" />
         <h:outputText value="#{newInstallation.version}" />
-        <h:outputText value="Baseline:" />
-        <h:outputLink value="baseline/#{oldInstallation.package.baseline.name}">
-          <h:outputText value="#{oldInstallation.package.baseline.name}" />
-        </h:outputLink>
-        <h:outputLink value="baseline/#{newInstallation.package.baseline.name}">
-          <h:outputText value="#{newInstallation.package.baseline.name}" />
-        </h:outputLink>
         <h:outputText value="Upstream URL:" />
-        <h:outputLink value="#{oldInstallation.package.upstream}">
-          <h:outputText value="#{oldInstallation.package.upstream}" />
+        <h:outputLink value="#{oldInstallation.module.upstream}">
+          <h:outputText value="#{oldInstallation.module.upstream}" />
         </h:outputLink>
-        <h:outputLink value="#{newInstallation.package.upstream}">
-          <h:outputText value="#{newInstallation.package.upstream}" />
+        <h:outputLink value="#{newInstallation.module.upstream}">
+          <h:outputText value="#{newInstallation.module.upstream}" />
         </h:outputLink>
         <h:outputText value="Is complete:" />
         <h:outputText value="#{oldInstallation.complete}" />

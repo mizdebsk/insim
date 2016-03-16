@@ -16,35 +16,38 @@
 package org.fedoraproject.insim.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 
 /**
  * @author Mikolaj Izdebski
  */
 @Entity
-public class Package implements Serializable {
+public class Module implements Serializable {
 
     private static final long serialVersionUID = 1;
 
     @Id
     private String name;
-    @ManyToOne
-    private Baseline baseline;
     private String upstream;
     private String upstreamVersion;
     private Long upstreamInstallSize;
     private Long upstreamDownloadSize;
-    @ManyToMany(mappedBy = "packages")
+    @ManyToMany(mappedBy = "modules")
     private List<Collection> collections;
     @ElementCollection
     private List<String> rpms;
+    @ManyToMany
+    private List<Module> parents;
 
     public String getName() {
         return this.name;
@@ -52,14 +55,6 @@ public class Package implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Baseline getBaseline() {
-        return this.baseline;
-    }
-
-    public void setBaseline(Baseline baseline) {
-        this.baseline = baseline;
     }
 
     public String getUpstream() {
@@ -110,12 +105,38 @@ public class Package implements Serializable {
         this.rpms = rpms;
     }
 
-    public boolean isMetapackage() {
+    public boolean isMetamodule() {
         return !getRpms().isEmpty();
     }
 
+    public List<Module> getParents() {
+        return parents;
+    }
+
+    public void setParents(List<Module> parents) {
+        this.parents = parents;
+    }
+
     public List<String> getInstallRpms() {
-        return isMetapackage() ? getRpms() : Collections.singletonList(getName());
+        return isMetamodule() ? getRpms() : Collections.singletonList(getName());
+    }
+
+    public List<String> getBaselineRpms() {
+        return getParentRpms(new TreeSet<>(), new LinkedHashSet<>());
+    }
+
+    public List<String> getAllRpms() {
+        return getParentRpms(new TreeSet<>(getInstallRpms()), new LinkedHashSet<>());
+    }
+
+    private List<String> getParentRpms(Set<String> rpmSet, Set<Module> visited) {
+        if (visited.add(this)) {
+            for (Module mod : parents) {
+                rpmSet.addAll(mod.getInstallRpms());
+                mod.getParentRpms(rpmSet, visited);
+            }
+        }
+        return new ArrayList<>(rpmSet);
     }
 
 }

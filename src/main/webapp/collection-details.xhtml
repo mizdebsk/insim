@@ -26,8 +26,8 @@
   </ui:define>
 
   <ui:define name="content">
-    <c:set var="packages"
-           value="#{collectionView.collection.packages}" />
+    <c:set var="modules"
+           value="#{collectionView.collection.modules}" />
     <h:panelGroup rendered="#{collectionView.collection == null}">
       <em>Collection #{collectionView.name} is not known to Insim.
         You can contact Insim administrators in order to request adding this

@@ -25,33 +25,33 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
-import org.fedoraproject.insim.model.Package;
-import org.fedoraproject.insim.model.Package_;
+import org.fedoraproject.insim.model.Module;
+import org.fedoraproject.insim.model.Module_;
 
 /**
  * @author Mikolaj Izdebski
  */
 @ApplicationScoped
-public class PackageDAO {
+public class ModuleDAO {
 
     @Inject
     private EntityManager em;
 
-    public Package getByName(String name) {
-        return em.find(Package.class, name);
+    public Module getByName(String name) {
+        return em.find(Module.class, name);
     }
 
-    public List<Package> getAll() {
+    public List<Module> getAll() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Package> criteria = cb.createQuery(Package.class);
-        Root<Package> pkg = criteria.from(Package.class);
-        criteria.select(pkg).orderBy(cb.asc(pkg.get(Package_.name)));
+        CriteriaQuery<Module> criteria = cb.createQuery(Module.class);
+        Root<Module> module = criteria.from(Module.class);
+        criteria.select(module).orderBy(cb.asc(module.get(Module_.name)));
         return em.createQuery(criteria).getResultList();
     }
 
     @Transactional
-    public void persist(Package pkg) {
-        em.persist(pkg);
+    public void persist(Module module) {
+        em.persist(module);
     }
 
 }

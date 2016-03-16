@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2016 Red Hat, Inc.
+ * Copyright (c) 2015 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,25 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fedoraproject.insim.data;
+package org.fedoraproject.insim.frontend.controller;
 
-import javax.enterprise.context.ApplicationScoped;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import javax.inject.Named;
 
-import org.fedoraproject.insim.model.Baseline;
+import org.fedoraproject.insim.data.ModuleDAO;
+import org.fedoraproject.insim.model.Module;
 
 /**
  * @author Mikolaj Izdebski
  */
-@ApplicationScoped
-public class BaselineDAO {
+@RequestScoped
+public class ModuleListProducer {
 
     @Inject
-    private EntityManager em;
+    private ModuleDAO dao;
 
-    public Baseline getByName(String name) {
-        return em.find(Baseline.class, name);
+    private List<Module> modules;
+
+    @Produces
+    @Named
+    public List<Module> getModules() {
+        return modules;
+    }
+
+    @PostConstruct
+    public void initialize() {
+        modules = dao.getAll();
     }
 
 }

@@ -23,24 +23,24 @@ import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
 import org.fedoraproject.insim.data.InstallationDAO;
-import org.fedoraproject.insim.data.PackageDAO;
+import org.fedoraproject.insim.data.ModuleDAO;
 import org.fedoraproject.insim.model.Collection;
 import org.fedoraproject.insim.model.Installation;
-import org.fedoraproject.insim.model.Package;
+import org.fedoraproject.insim.model.Module;
 
 /**
  * @author Mikolaj Izdebski
  */
 @ManagedBean
 @ViewScoped
-public class PackageView {
+public class ModuleView {
 
     @Inject
-    private PackageDAO dao;
+    private ModuleDAO dao;
     @Inject
     private InstallationDAO instDAO;
 
-    private Package pkg;
+    private Module module;
 
     private String name;
 
@@ -65,17 +65,17 @@ public class PackageView {
 
     }
 
-    public Package getPackage() {
-        return pkg;
+    public Module getModule() {
+        return module;
     }
 
     public void load() {
-        pkg = dao.getByName(name);
-        if (pkg == null)
+        module = dao.getByName(name);
+        if (module == null)
             return;
 
-        for (Collection coll : pkg.getCollections()) {
-            Installation latestInstallation = instDAO.getLatestByPackageCollection(pkg, coll);
+        for (Collection coll : module.getCollections()) {
+            Installation latestInstallation = instDAO.getLatestByModuleCollection(module, coll);
             if (latestInstallation != null) {
                 collectionInfos.add(new CollectionInfo(coll, latestInstallation));
             }

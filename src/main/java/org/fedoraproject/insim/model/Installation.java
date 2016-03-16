@@ -39,7 +39,7 @@ public class Installation implements Serializable {
     @GeneratedValue
     private Integer id;
     @ManyToOne
-    private Package pkg;
+    private Module module;
     @ManyToOne
     private Repository repository;
     private String version;
@@ -60,12 +60,12 @@ public class Installation implements Serializable {
         this.id = id;
     }
 
-    public Package getPackage() {
-        return this.pkg;
+    public Module getModule() {
+        return this.module;
     }
 
-    public void setPackage(Package packagee) {
-        this.pkg = packagee;
+    public void setModule(Module module) {
+        this.module = module;
     }
 
     public Repository getRepository() {

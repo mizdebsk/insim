@@ -33,7 +33,7 @@ import javax.transaction.Transactional;
 import org.fedoraproject.insim.model.Collection;
 import org.fedoraproject.insim.model.Installation;
 import org.fedoraproject.insim.model.Installation_;
-import org.fedoraproject.insim.model.Package;
+import org.fedoraproject.insim.model.Module;
 import org.fedoraproject.insim.model.Repository_;
 
 /**
@@ -49,24 +49,24 @@ public class InstallationDAO {
         return em.find(Installation.class, id);
     }
 
-    private TypedQuery<Installation> createPackageCollectionQuery(Package pkg, Collection col, boolean orderDescTime) {
+    private TypedQuery<Installation> createModuleCollectionQuery(Module module, Collection col, boolean orderDescTime) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Installation> criteria = cb.createQuery(Installation.class);
         Root<Installation> inst = criteria.from(Installation.class);
-        Predicate pkgMatch = cb.equal(inst.get(Installation_.pkg), pkg);
+        Predicate modMatch = cb.equal(inst.get(Installation_.module), module);
         Predicate colMatch = cb.equal(inst.join(Installation_.repository).get(Repository_.collection), col);
         Function<Expression<?>, Order> orderFunc = orderDescTime ? cb::desc : cb::asc;
         Order order = orderFunc.apply(inst.join(Installation_.repository).get(Repository_.creationTime));
-        criteria.select(inst).where(cb.and(pkgMatch, colMatch)).orderBy(order);
+        criteria.select(inst).where(cb.and(modMatch, colMatch)).orderBy(order);
         return em.createQuery(criteria);
     }
 
-    public List<Installation> getByPackageCollection(Package pkg, Collection col) {
-        return createPackageCollectionQuery(pkg, col, false).getResultList();
+    public List<Installation> getByModuleCollection(Module module, Collection col) {
+        return createModuleCollectionQuery(module, col, false).getResultList();
     }
 
-    public Installation getLatestByPackageCollection(Package pkg, Collection col) {
-        return createPackageCollectionQuery(pkg, col, true) //
+    public Installation getLatestByModuleCollection(Module module, Collection col) {
+        return createModuleCollectionQuery(module, col, true) //
                 .setMaxResults(1).getResultList().stream().findFirst().orElse(null);
     }
 

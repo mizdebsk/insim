@@ -32,12 +32,12 @@ import javax.ws.rs.core.Response.Status;
 import org.fedoraproject.insim.data.CollectionDAO;
 import org.fedoraproject.insim.data.DependencyGraphDAO;
 import org.fedoraproject.insim.data.InstallationDAO;
-import org.fedoraproject.insim.data.PackageDAO;
+import org.fedoraproject.insim.data.ModuleDAO;
 import org.fedoraproject.insim.data.RepositoryDAO;
 import org.fedoraproject.insim.model.Collection;
 import org.fedoraproject.insim.model.DependencyGraph;
 import org.fedoraproject.insim.model.Installation;
-import org.fedoraproject.insim.model.Package;
+import org.fedoraproject.insim.model.Module;
 import org.fedoraproject.insim.model.Repository;
 import org.fedoraproject.insim.model.Rpm;
 import org.fedoraproject.javadeptools.hawkey.HawkeyException;
@@ -59,7 +59,7 @@ public class Indexer {
     private RepositoryDAO repoDao;
 
     @Inject
-    private PackageDAO pkgDao;
+    private ModuleDAO moduleDao;
 
     @Inject
     private InstallationDAO instDao;
@@ -76,14 +76,14 @@ public class Indexer {
                 + "}";
     }
 
-    private void newInstallation(Sack sack, Repository repo, Package pkg) throws HawkeyException {
+    private void newInstallation(Sack sack, Repository repo, Module module) throws HawkeyException {
         Installation inst = new Installation();
         inst.setRepository(repo);
-        inst.setPackage(pkg);
+        inst.setModule(module);
 
         Simulation sim = new Simulation(sack);
-        sim.addBaseDeps(pkg.getBaseline().getAllPackages());
-        sim.addInstDeps(pkg.getInstallRpms());
+        sim.addBaseDeps(module.getBaselineRpms());
+        sim.addInstDeps(module.getInstallRpms());
         if (!sim.run()) {
             inst.setComplete(false);
             instDao.persist(inst);
@@ -97,7 +97,7 @@ public class Indexer {
             fileCount += dep.getFileCount();
             downloadSize += dep.getDownloadSize();
             installSize += dep.getInstallSize();
-            if (dep.getName().equals(pkg.getName())) {
+            if (dep.getName().equals(module.getName())) {
                 inst.setVersion(dep.getVersion());
                 inst.setRelease(dep.getRelease());
             }
@@ -157,8 +157,8 @@ public class Indexer {
             repo.setCreationTime(new Timestamp(timestamp));
             repoDao.persist(repo);
 
-            for (Package pkg : pkgDao.getAll()) {
-                newInstallation(sack, repo, pkg);
+            for (Module module : moduleDao.getAll()) {
+                newInstallation(sack, repo, module);
             }
         } catch (HawkeyException | IOException e) {
             throw new RuntimeException(e);

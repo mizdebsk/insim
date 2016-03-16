@@ -30,10 +30,10 @@ import javax.ws.rs.core.Response.Status;
 
 import org.fedoraproject.insim.data.DependencyGraphDAO;
 import org.fedoraproject.insim.data.InstallationDAO;
-import org.fedoraproject.insim.data.PackageDAO;
+import org.fedoraproject.insim.data.ModuleDAO;
 import org.fedoraproject.insim.model.Collection;
 import org.fedoraproject.insim.model.DependencyGraph;
-import org.fedoraproject.insim.model.Package;
+import org.fedoraproject.insim.model.Module;
 
 /**
  * @author Mikolaj Izdebski
@@ -43,7 +43,7 @@ import org.fedoraproject.insim.model.Package;
 public class DataRest {
 
     @Inject
-    private PackageDAO pkgDao;
+    private ModuleDAO moduleDao;
 
     @Inject
     private InstallationDAO instDao;
@@ -52,17 +52,17 @@ public class DataRest {
     private DependencyGraphDAO graphDao;
 
     @GET
-    @Path("installations/{package}")
+    @Path("installations/{module}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Object getPackageInstallations( //
-            @PathParam("package") String pkgName //
+    public Object getModuleInstallations( //
+            @PathParam("module") String moduleName //
     ) {
-        Package pkg = pkgDao.getByName(pkgName);
-        if (pkg == null)
+        Module module = moduleDao.getByName(moduleName);
+        if (module == null)
             return Response.status(Status.NOT_FOUND).build();
 
-        return pkg.getCollections().stream().collect(Collectors.toMap(Collection::getName, coll -> instDao
-                .getByPackageCollection(pkg, coll).stream()
+        return module.getCollections().stream().collect(Collectors.toMap(Collection::getName, coll -> instDao
+                .getByModuleCollection(module, coll).stream()
                 .map(inst -> Arrays.asList(inst.getId(), inst.getRepository().getCreationTime(), inst.getComplete(),
                         inst.getInstallSize(), inst.getDownloadSize(), inst.getDependencyCount(), inst.getFileCount()))
                 .collect(Collectors.toList())));

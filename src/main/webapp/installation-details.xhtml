@@ -55,19 +55,15 @@
           <h:outputLink value="collection/#{installation.repository.collection.name}">
             <h:outputText value="#{installation.repository.collection.name}" />
           </h:outputLink>
-          <h:outputText value="Package name:" />
-          <h:outputLink value="package/#{installation.package.name}">
-            <h:outputText value="#{installation.package.name}" />
+          <h:outputText value="Module name:" />
+          <h:outputLink value="module/#{installation.module.name}">
+            <h:outputText value="#{installation.module.name}" />
           </h:outputLink>
-          <h:outputText value="Package version:" />
+          <h:outputText value="Module version:" />
           <h:outputText value="#{installation.version}" />
-          <h:outputText value="Baseline:" />
-          <h:outputLink value="baseline/#{installation.package.baseline.name}">
-            <h:outputText value="#{installation.package.baseline.name}" />
-          </h:outputLink>
           <h:outputText value="Upstream URL:" />
-          <h:outputLink value="#{installation.package.upstream}">
-            <h:outputText value="#{installation.package.upstream}" />
+          <h:outputLink value="#{installation.module.upstream}">
+            <h:outputText value="#{installation.module.upstream}" />
           </h:outputLink>
           <h:outputText value="Is complete:" />
           <h:outputText value="#{installation.complete}" />
@@ -120,7 +116,7 @@
       </div>
       <div id="deps-shown">
         <p>The following is a dependency graph. Nodes represent packages and edges – requires between
-          them. Packages in baseline (assumed to be installed before attempting to install the package)
+          them. Packages in parent modules (assumed to be installed before attempting to install the package)
           are not included in the graph. Big graphs may <strong>fail to render</strong> due to memory constrains.
           You can hover nodes and edges to <strong>tooltip</strong> with some information – useful especially when graph
           is not readable due to its complexity. <strong>Soft-dependencies</strong> are not shown in the graph (yet).</p>
