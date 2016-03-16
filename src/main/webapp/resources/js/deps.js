@@ -88,8 +88,10 @@ function loadDepGraphs() {
 }
 
 function depsOnload() {
-    $('.datatable').dataTable({
-        "order" : [ [ 0, "asc" ] ]
+    $('.datatable').each(function() {
+        dataTable({
+            "order" : [ [ 0, "asc" ] ]
+        })
     });
 
     $("#deps-shown").hide();
