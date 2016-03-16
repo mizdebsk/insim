@@ -72,10 +72,7 @@ function fetchGraphData(id, handler) {
     $.getJSON('/insim/api/data/graph/' + id, handler);
 }
 
-function depsOnload() {
-    $('.datatable').dataTable({
-        "order" : [ [ 0, "asc" ] ]
-    });
+function loadDepGraphs() {
     if (jsf.installationId) {
         fetchGraphData(jsf.installationId, function(data) {
             createDependencyGraph(data, data);
@@ -88,6 +85,19 @@ function depsOnload() {
             });
         });
     }
+}
+
+function depsOnload() {
+    $('.datatable').dataTable({
+        "order" : [ [ 0, "asc" ] ]
+    });
+
+    $("#deps-shown").hide();
+    $("#deps-hidden > button").click(function() {
+        $("#deps-hidden").hide();
+        loadDepGraphs();
+        $("#deps-shown").show();
+    });
 }
 
 $(document).ready(depsOnload);

@@ -87,11 +87,17 @@
       </h:panelGrid>
 
       <h2>Dependency graph difference</h2>
-      <p>The following is a difference between two dependency graphs. <strong>Red</strong> nodes and edges represent
-        packages and requires unique to first installation (showed above on the left side), <strong>green</strong> nodes
-        and edges are unique to second (right) installation, while black color means parts common
-        to both installations.</p>
-      <div id="jsviz"/>
+      <div id="deps-hidden">
+        <p>By default dependency graph difference is hidden to save resources, but it can be shown on demand.</p>
+        <button type="button" class="btn btn-primary">Show graph</button>
+      </div>
+      <div id="deps-shown">
+        <p>The following is a difference between two dependency graphs. <strong>Red</strong> nodes and edges represent
+          packages and requires unique to first installation (showed above on the left side), <strong>green</strong> nodes
+          and edges are unique to second (right) installation, while black color means parts common
+          to both installations.</p>
+        <div id="jsviz"/>
+      </div>
     </h:panelGroup>
   </ui:define>
 
