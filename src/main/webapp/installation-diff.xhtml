@@ -27,8 +27,11 @@
   </ui:define>
 
   <ui:define name="resources">
+    <link rel="stylesheet" type="text/css" href="webjars/datatables/1.10.11/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="webjars/datatables/1.10.11/css/dataTables.bootstrap.min.css" />
     <script type="application/javascript" src="webjars/jquery/2.2.1/jquery.min.js" />
     <script type="application/javascript" src="webjars/viz.js/1.3.0/viz.js" />
+    <script type="application/javascript" src="webjars/datatables/1.10.11/js/jquery.dataTables.min.js" />
     <script type="application/javascript" src="resources/js/deps.js" />
   </ui:define>
 
@@ -79,6 +82,45 @@
         <h:outputText value="#{oldInstallation.fileCount}" />
         <h:outputText value="#{newInstallation.fileCount}" />
       </h:panelGrid>
+
+      <ui:repeat var="piece" value="#{installationDiffView.diffPieces}">
+        <ui:fragment rendered="#{not empty piece.elements}">
+          <h2><h:outputText value="#{piece.title}" /></h2>
+          <table class="datatable table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Epoch</th>
+                <th>Version</th>
+                <th>Release</th>
+                <th>Arch</th>
+                <th>Install size</th>
+                <th>Download size</th>
+                <th>File count</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ui:repeat var="rpmDiff" value="#{piece.elements}">
+                <tr>
+                  <ui:repeat var="fd" value="#{rpmDiff}">
+                    <td class="diff">
+                      <ui:fragment rendered="#{not fd.differs()}">
+                        <div class="common"><h:outputText value="#{fd.old}" /></div>
+                      </ui:fragment>
+                      <ui:fragment rendered="#{fd.differs() and fd.hasOld()}">
+                        <div class="old"><h:outputText value="#{fd.old}" /></div>
+                      </ui:fragment>
+                      <ui:fragment rendered="#{fd.differs() and fd.hasNew()}">
+                        <div class="new"><h:outputText value="#{fd.new}" /></div>
+                      </ui:fragment>
+                    </td>
+                  </ui:repeat>
+                </tr>
+              </ui:repeat>
+            </tbody>
+          </table>
+        </ui:fragment>
+      </ui:repeat>
 
       <h2>Dependency graph difference</h2>
       <div id="deps-hidden">

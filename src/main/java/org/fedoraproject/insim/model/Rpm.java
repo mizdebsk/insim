@@ -16,6 +16,9 @@
 package org.fedoraproject.insim.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,6 +33,16 @@ import javax.persistence.ManyToOne;
 public class Rpm implements Serializable {
 
     private static final long serialVersionUID = 1;
+
+    public static final List<Function<Rpm, Object>> FIELD_GETTERS = Arrays.asList( //
+            Rpm::getName, //
+            Rpm::getEpoch, //
+            Rpm::getVersion, //
+            Rpm::getRelease, //
+            Rpm::getArch, //
+            Rpm::getInstallSize, //
+            Rpm::getDownloadSize, //
+            Rpm::getFileCount);
 
     @Id
     @GeneratedValue

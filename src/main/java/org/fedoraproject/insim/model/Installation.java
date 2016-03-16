@@ -26,6 +26,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 /**
  * @author Mikolaj Izdebski
@@ -50,6 +51,7 @@ public class Installation implements Serializable {
     private Integer dependencyCount;
     private Integer fileCount;
     @OneToMany(mappedBy = "installation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OrderBy("name ASC")
     private List<Rpm> rpms;
 
     public Integer getId() {
