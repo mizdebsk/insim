@@ -55,7 +55,12 @@ function graphClickHandler(collData, e, id) {
 }
 
 function createGraph(domElement, collData, graphType) {
+    var dataWidth = collData.length;
+    var maxWidth = $(domElement).parent().width();
+    // XXX don't hardcode sizes here
+    var width = Math.min(100 + 20 * dataWidth, maxWidth);
     var options = {
+        width : width,
         labels : [ 'Timestamp', graphType.title ],
         clickCallback : function(e, x, pts) {
             var id = findInstallationIdByTimestamp(collData, x);
