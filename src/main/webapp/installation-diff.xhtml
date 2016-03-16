@@ -45,7 +45,7 @@
     </h:panelGroup>
 
     <h:panelGroup rendered="#{not empty oldInstallation and not empty newInstallation}">
-      <h:panelGrid columns="3" styleClass="table">
+      <h:panelGrid columns="3" styleClass="table" columnClasses="col-md-2,col-md-5,col-md-5">
         <h:outputText value="Collection name:" />
         <h:outputLink value="collection/#{oldInstallation.repository.collection.name}">
           <h:outputText value="#{oldInstallation.repository.collection.name}" />

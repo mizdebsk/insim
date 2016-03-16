@@ -24,7 +24,7 @@
   </h:panelGroup>
 
   <h:panelGroup rendered="#{not empty packages}">
-    <div class="list-group">
+    <div class="list-group col-md-4">
       <ui:repeat var="package" value="#{packages}">
         <h:outputLink value="package/#{package.name}" styleClass="list-group-item">#{package.name}</h:outputLink>
       </ui:repeat>

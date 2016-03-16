@@ -29,7 +29,7 @@
       <em>No collections.</em>
     </h:panelGroup>
     <h:panelGroup rendered="#{not empty collections}">
-      <div class="list-group">
+      <div class="list-group col-md-3">
         <ui:repeat id="tbl" var="collection" value="#{collections}">
           <h:outputLink value="collection/#{collection.name}" styleClass="list-group-item">#{collection.name}</h:outputLink>
         </ui:repeat>

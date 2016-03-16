@@ -50,7 +50,7 @@
         <div class="panel-heading">
           <h3 class="panel-title">Package information</h3>
         </div>
-        <h:panelGrid columns="2" styleClass="table">
+        <h:panelGrid columns="2" styleClass="table" columnClasses="col-md-2,col-md-10">
           <h:outputText value="Name:" />
           <h:outputText value="#{package.name}" />
           <h:outputText value="Baseline:" />
@@ -61,7 +61,7 @@
           <h:outputText value="#{package.metapackage}" />
           <h:outputText value="RPMs:" />
           <h:panelGroup>
-            <ul>
+            <ul class="list-inline">
               <ui:repeat var="rpm" value="#{package.installRpms}">
                 <li>
                   <h:outputText value="#{rpm}" />
@@ -113,7 +113,7 @@
       </table>
       </div>
 
-      <ul>
+      <ul class="list-unstyled">
         <li><h:selectBooleanCheckbox value="true" onclick="$('.chart-isz').toggle(checked)" />install size</li>
         <li><h:selectBooleanCheckbox value="true" onclick="$('.chart-dsz').toggle(checked)" />download size</li>
         <li><h:selectBooleanCheckbox value="true" onclick="$('.chart-dcn').toggle(checked)" />dependency count</li>

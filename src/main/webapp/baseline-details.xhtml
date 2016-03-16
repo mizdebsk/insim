@@ -37,12 +37,12 @@
         <div class="panel-heading">
           <h3 class="panel-title">Baseline information</h3>
         </div>
-        <h:panelGrid columns="2" styleClass="table">
+        <h:panelGrid columns="2" styleClass="table" columnClasses="col-md-2,col-md-10">
           <h:outputText value="Baseline name:" />
           <h:outputText value="#{baseline.name}" />
           <h:outputText value="Packages:" />
           <h:panelGroup>
-            <ul>
+            <ul class="list-inline">
               <ui:repeat var="pkg" value="#{baseline.packages}">
                 <li>
                   <h:outputText value="#{pkg}" />
@@ -52,7 +52,7 @@
           </h:panelGroup>
           <h:outputText value="Parents:" />
           <h:panelGroup>
-            <ul>
+            <ul class="list-inline">
               <ui:repeat var="parent" value="#{baseline.parents}">
                 <li>
                   <h:outputLink value="baseline/#{parent.name}">
@@ -64,7 +64,7 @@
           </h:panelGroup>
           <h:outputText value="All packages:" />
           <h:panelGroup>
-            <ul>
+            <ul class="list-inline">
               <ui:repeat var="pkg" value="#{baseline.allPackages}">
                 <li>
                   <h:outputText value="#{pkg}" />
