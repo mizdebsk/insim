@@ -102,6 +102,9 @@ function loadGraphs(data) {
     }
     graphTypes.forEach(function(graphType) {
         $("#bar-" + graphType.id).each(function() {
+            var dataWidth = bar[graphType.id]['datasets'][0]['data'].length;
+            // XXX don't hardcode sizes here
+            $(this).width(150 + 40 * dataWidth);
             var ctx = this.getContext('2d');
             var chart = new Chart(ctx).Bar(bar[graphType.id]);
             this.onclick = function(e) {
