@@ -8,7 +8,7 @@ INSERT INTO COLLECTION(NAME, LOCATION) VALUES
 
 INSERT INTO MODULE(NAME) VALUES
     ('java-headless'),
-    ('java',
+    ('java'),
     ('java-devel'),
     ('maven'),
     ('ant'),
