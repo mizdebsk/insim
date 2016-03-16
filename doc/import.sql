@@ -6,21 +6,21 @@ INSERT INTO COLLECTION(NAME, LOCATION) VALUES
     ('f24', 'https://kojipkgs.fedoraproject.org/repos/f24-build/latest/{arch}/'),
     ('f25', 'https://kojipkgs.fedoraproject.org/repos/f21-build/latest/{arch}/');
 
-INSERT INTO MODULE(NAME, UPSTREAM, UPSTREAMDOWNLOADSIZE, UPSTREAMINSTALLSIZE, UPSTREAMVERSION) VALUES
-    ('java-headless', '', 0, 0, '0'),
-    ('java', '', 0, 0, '0'),
-    ('java-devel', '', 0, 0, '0'),
-    ('maven', 'http://maven.apache.org/', 8042383, 9533094, '3.3.3'),
-    ('ant', 'http://ant.apache.org/', 4351965, 37939729, '1.9.4'),
-    ('eclipse-jdt', 'https://www.eclipse.org/', 160990943, 182863820, '4.4.2'),
-    ('jenkins', 'https://jenkins-ci.org/', 63121651, 73292627, '1.615'),
-    ('gradle', 'http://gradle.org/', 45383133, 51291589, '2.4'),
-    ('groovy', 'http://www.groovy-lang.org/', 31968599, 35756588, '2.4.3'),
-    ('freemind', 'http://sourceforge.net/projects/freemind/', 37583505, 41406322, '1.0.1'),
-    ('maven-local', '', 0, 0, '0'),
-    ('gradle-local', '', 0, 0, '0'),
-    ('core', '', 0, 0, '0'),
-    ('buildsys-build', '', 0, 0, '0');
+INSERT INTO MODULE(NAME) VALUES
+    ('java-headless'),
+    ('java',
+    ('java-devel'),
+    ('maven'),
+    ('ant'),
+    ('eclipse-jdt'),
+    ('jenkins'),
+    ('gradle'),
+    ('groovy'),
+    ('freemind'),
+    ('maven-local'),
+    ('gradle-local'),
+    ('core'),
+    ('buildsys-build');
 
 INSERT INTO MODULE_RPMS(MODULE_NAME, RPMS) VALUES
     ('core', 'audit'),

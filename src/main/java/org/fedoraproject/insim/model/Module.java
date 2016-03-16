@@ -38,10 +38,6 @@ public class Module implements Serializable {
 
     @Id
     private String name;
-    private String upstream;
-    private String upstreamVersion;
-    private Long upstreamInstallSize;
-    private Long upstreamDownloadSize;
     @ManyToMany(mappedBy = "modules")
     private List<Collection> collections;
     @ElementCollection
@@ -55,38 +51,6 @@ public class Module implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getUpstream() {
-        return this.upstream;
-    }
-
-    public void setUpstream(String upstream) {
-        this.upstream = upstream;
-    }
-
-    public String getUpstreamVersion() {
-        return upstreamVersion;
-    }
-
-    public void setUpstreamVersion(String upstreamVersion) {
-        this.upstreamVersion = upstreamVersion;
-    }
-
-    public Long getUpstreamInstallSize() {
-        return this.upstreamInstallSize;
-    }
-
-    public void setUpstreamInstallSize(Long upstreamInstallSize) {
-        this.upstreamInstallSize = upstreamInstallSize;
-    }
-
-    public Long getUpstreamDownloadSize() {
-        return this.upstreamDownloadSize;
-    }
-
-    public void setUpstreamDownloadSize(Long upstreamDownloadSize) {
-        this.upstreamDownloadSize = upstreamDownloadSize;
     }
 
     public List<Collection> getCollections() {

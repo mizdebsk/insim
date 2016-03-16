@@ -55,10 +55,6 @@
           <h:outputText value="#{module.name}" />
           <h:outputText value="Is metamodule:" />
           <h:outputText value="#{module.metamodule}" />
-          <h:outputText value="Upstream URL:" />
-          <h:outputLink value="#{module.upstream}">
-            <h:outputText value="#{module.upstream}" />
-          </h:outputLink>
           <h:outputText value="RPMs:" />
           <h:panelGroup>
             <ul class="list-inline">
@@ -120,13 +116,6 @@
               <td><h:outputText value="#{collectionInfo.latestInstallation.fileCount}" /></td>
             </tr>
           </ui:repeat>
-          <tr>
-            <td>Upstream</td>
-            <td><h:outputText value="#{module.upstreamVersion}" /></td>
-            <td><h:outputText value="#{module.upstreamInstallSize}" /></td>
-            <td><h:outputText value="#{module.upstreamDownloadSize}" /></td>
-            <td colspan="2" />
-          </tr>
         </tbody>
       </table>
       </div>
