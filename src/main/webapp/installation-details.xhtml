@@ -75,6 +75,37 @@
         </h:panelGrid>
       </div>
 
+      <h2>RPM list</h2>
+      <p>The following is a list of RPM packages installed.</p>
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Epoch</th>
+            <th>Version</th>
+            <th>Release</th>
+            <th>Arch</th>
+            <th>Download size</th>
+            <th>Install size</th>
+            <th>File count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ui:repeat var="rpm" value="#{installation.rpms}">
+            <tr>
+              <td><h:outputText value="#{rpm.name}" /></td>
+              <td><h:outputText value="#{rpm.epoch}" /></td>
+              <td><h:outputText value="#{rpm.version}" /></td>
+              <td><h:outputText value="#{rpm.release}" /></td>
+              <td><h:outputText value="#{rpm.arch}" /></td>
+              <td><h:outputText value="#{rpm.downloadSize}" /></td>
+              <td><h:outputText value="#{rpm.installSize}" /></td>
+              <td><h:outputText value="#{rpm.fileCount}" /></td>
+            </tr>
+          </ui:repeat>
+        </tbody>
+      </table>
+
       <h2>Dependency graph</h2>
       <p>The following is a dependency graph. Nodes represent packages and edges – requires between
         them. Packages in baseline (assumed to be installed before attempting to install the package)
