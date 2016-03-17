@@ -24,12 +24,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * @author Mikolaj Izdebski
  */
 @Entity
+@Table(indexes = { @Index(columnList = "installation_id") })
 public class Rpm implements Serializable {
 
     private static final long serialVersionUID = 1;
@@ -53,19 +56,25 @@ public class Rpm implements Serializable {
 
     @Column(nullable = false)
     private String name;
+
     @Column(nullable = false)
     private Integer epoch;
+
     @Column(nullable = false)
     private String version;
+
     @Column(nullable = false)
     private String release;
+
     @Column(nullable = false)
     private String arch;
 
     @Column(nullable = false)
     private Long downloadSize;
+
     @Column(nullable = false)
     private Long installSize;
+
     @Column(nullable = false)
     private Integer fileCount;
 

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -27,11 +28,14 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  * @author Mikolaj Izdebski
  */
 @Entity
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "repository_id", "module_name" }) })
 public class Installation implements Serializable {
 
     private static final long serialVersionUID = 1;
@@ -39,17 +43,34 @@ public class Installation implements Serializable {
     @Id
     @GeneratedValue
     private Integer id;
-    @ManyToOne
+
+    @ManyToOne(optional = false)
     private Module module;
-    @ManyToOne
+
+    @ManyToOne(optional = false)
     private Repository repository;
+
+    @Column(nullable = false)
     private String version;
+
+    @Column(nullable = false)
     private String release;
+
+    @Column(nullable = false)
     private Boolean complete;
+
+    @Column(nullable = false)
     private Long installSize;
+
+    @Column(nullable = false)
     private Long downloadSize;
+
+    @Column(nullable = false)
     private Integer dependencyCount;
+
+    @Column(nullable = false)
     private Integer fileCount;
+
     @OneToMany(mappedBy = "installation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("name ASC")
     private List<Rpm> rpms;

@@ -17,6 +17,7 @@ package org.fedoraproject.insim.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
@@ -35,6 +36,7 @@ public class DependencyGraph implements Serializable {
     private Installation installation;
 
     @Lob
+    @Column(nullable = false)
     private String json;
 
     public Installation getInstallation() {

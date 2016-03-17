@@ -18,6 +18,7 @@ package org.fedoraproject.insim.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -33,6 +34,7 @@ public class Collection implements Serializable {
     @Id
     private String name;
 
+    @Column(nullable = false)
     private String location;
 
     @ManyToMany

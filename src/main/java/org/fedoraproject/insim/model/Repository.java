@@ -35,10 +35,13 @@ public class Repository implements Serializable {
     @Id
     @GeneratedValue
     private Integer id;
+
     @Column(nullable = false)
     private Timestamp creationTime;
-    @ManyToOne
+
+    @ManyToOne(optional = false)
     private Collection collection;
+
     @Column(nullable = false)
     private Boolean active;
 

@@ -38,10 +38,13 @@ public class Module implements Serializable {
 
     @Id
     private String name;
+
     @ManyToMany(mappedBy = "modules")
     private List<Collection> collections;
+
     @ElementCollection
     private List<String> rpms;
+
     @ManyToMany
     private List<Module> parents;
 
