@@ -26,14 +26,29 @@
   </ui:define>
 
   <ui:define name="content">
-    <c:set var="modules"
-           value="#{collectionView.collection.modules}" />
-    <h:panelGroup rendered="#{collectionView.collection == null}">
+    <c:set var="collection" value="#{collectionView.collection}" />
+    <c:set var="modules" value="#{collection.modules}" />
+
+    <h:panelGroup rendered="#{collection == null}">
       <em>Collection #{collectionView.name} is not known to Insim.
         You can contact Insim administrators in order to request adding this
         collection.</em>
     </h:panelGroup>
-    <h:panelGroup rendered="#{collectionView.collection != null}">
+
+    <h:panelGroup rendered="#{collection != null}">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Collection information</h3>
+        </div>
+        <h:panelGrid columns="2" styleClass="table" columnClasses="col-md-2,col-md-10">
+          <h:outputText value="Name:" />
+          <h:outputText value="#{collection.name}" />
+          <h:outputText value="Location:" />
+          <h:outputText value="#{collection.location}" />
+        </h:panelGrid>
+      </div>
+
+      <h2>Module list</h2>
       <ui:include src="list.xhtml" />
     </h:panelGroup>
   </ui:define>
