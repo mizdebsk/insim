@@ -15,18 +15,16 @@
  */
 package org.fedoraproject.insim.data;
 
+import java.sql.Timestamp;
 import java.util.List;
-import java.util.function.Function;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
@@ -34,6 +32,7 @@ import org.fedoraproject.insim.model.Collection;
 import org.fedoraproject.insim.model.Installation;
 import org.fedoraproject.insim.model.Installation_;
 import org.fedoraproject.insim.model.Module;
+import org.fedoraproject.insim.model.Repository;
 import org.fedoraproject.insim.model.Repository_;
 
 /**
@@ -49,25 +48,68 @@ public class InstallationDAO {
         return em.find(Installation.class, id);
     }
 
-    private TypedQuery<Installation> createModuleCollectionQuery(Module module, Collection col, boolean orderDescTime) {
+    /**
+     * <pre>
+     * SELECT i.*
+     * FROM Installation i JOIN Repository r ON r.id = i.repository_id
+     * WHERE i.module_name = ${module} AND r.collection_name = ${collection}
+     * ORDER BY r.creationtime DESC
+     * LIMIT 1
+     * </pre>
+     * 
+     * @param module
+     * @param collection
+     * @return
+     */
+    public Installation getLatestByModuleCollection(Module module, Collection collection) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Installation> criteria = cb.createQuery(Installation.class);
-        Root<Installation> inst = criteria.from(Installation.class);
-        Predicate modMatch = cb.equal(inst.get(Installation_.module), module);
-        Predicate colMatch = cb.equal(inst.join(Installation_.repository).get(Repository_.collection), col);
-        Function<Expression<?>, Order> orderFunc = orderDescTime ? cb::desc : cb::asc;
-        Order order = orderFunc.apply(inst.join(Installation_.repository).get(Repository_.creationTime));
-        criteria.select(inst).where(cb.and(modMatch, colMatch)).orderBy(order);
-        return em.createQuery(criteria);
+        CriteriaQuery<Installation> cq = cb.createQuery(Installation.class);
+
+        Root<Installation> t_Inst = cq.from(Installation.class);
+        Join<Installation, Repository> table_Repo = t_Inst.join(Installation_.repository);
+
+        Path<Module> c_Inst_module = t_Inst.get(Installation_.module);
+        Path<Collection> c_Repo_collection = table_Repo.get(Repository_.collection);
+        Path<Timestamp> c_Repo_creationTime = table_Repo.get(Repository_.creationTime);
+
+        return em
+                .createQuery( //
+                        cq.select(t_Inst) //
+                                .where(cb.and( //
+                                        cb.equal(c_Inst_module, module), //
+                                        cb.equal(c_Repo_collection, collection)))
+                                .orderBy(cb.desc(c_Repo_creationTime)))
+                .setMaxResults(1) //
+                .getResultList() //
+                .stream().findFirst().orElse(null);
     }
 
-    public List<Installation> getByModuleCollection(Module module, Collection col) {
-        return createModuleCollectionQuery(module, col, false).getResultList();
-    }
+    /**
+     * <pre>
+     * SELECT i.*
+     * FROM Installation i JOIN Repository r ON r.id = i.repository_id
+     * WHERE i.module_name = ${module}
+     * ORDER BY r.creationtime ASC
+     * </pre>
+     * 
+     * @param module
+     * @return
+     */
+    public List<Installation> getByModule(Module module) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Installation> cq = cb.createQuery(Installation.class);
 
-    public Installation getLatestByModuleCollection(Module module, Collection col) {
-        return createModuleCollectionQuery(module, col, true) //
-                .setMaxResults(1).getResultList().stream().findFirst().orElse(null);
+        Root<Installation> t_Inst = cq.from(Installation.class);
+        Join<Installation, Repository> t_Repo = t_Inst.join(Installation_.repository);
+
+        Path<Module> c_Inst_module = t_Inst.get(Installation_.module);
+        Path<Timestamp> c_Repo_creationTime = t_Repo.get(Repository_.creationTime);
+
+        return em.createQuery( //
+                cq.select(t_Inst) //
+                        .where(cb.equal(c_Inst_module, module)) //
+                        .orderBy(cb.asc(c_Repo_creationTime)))
+                .getResultList();
     }
 
     @Transactional

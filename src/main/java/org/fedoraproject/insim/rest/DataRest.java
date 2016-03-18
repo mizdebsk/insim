@@ -15,8 +15,11 @@
  */
 package org.fedoraproject.insim.rest;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -31,8 +34,8 @@ import javax.ws.rs.core.Response.Status;
 import org.fedoraproject.insim.data.DependencyGraphDAO;
 import org.fedoraproject.insim.data.InstallationDAO;
 import org.fedoraproject.insim.data.ModuleDAO;
-import org.fedoraproject.insim.model.Collection;
 import org.fedoraproject.insim.model.DependencyGraph;
+import org.fedoraproject.insim.model.Installation;
 import org.fedoraproject.insim.model.Module;
 
 /**
@@ -61,11 +64,14 @@ public class DataRest {
         if (module == null)
             return Response.status(Status.NOT_FOUND).build();
 
-        return module.getCollections().stream().collect(Collectors.toMap(Collection::getName, coll -> instDao
-                .getByModuleCollection(module, coll).stream()
-                .map(inst -> Arrays.asList(inst.getId(), inst.getRepository().getCreationTime(), inst.getComplete(),
-                        inst.getInstallSize(), inst.getDownloadSize(), inst.getDependencyCount(), inst.getFileCount()))
-                .collect(Collectors.toList())));
+        Map<String, List<List<Object>>> map = new TreeMap<>();
+        for (Installation inst : instDao.getByModule(module)) {
+            map.computeIfAbsent(inst.getRepository().getCollection().getName(), k -> new ArrayList<>())
+                    .add(Arrays.asList(inst.getId(), inst.getRepository().getCreationTime(), inst.getComplete(),
+                            inst.getInstallSize(), inst.getDownloadSize(), inst.getDependencyCount(),
+                            inst.getFileCount()));
+        }
+        return map;
     }
 
     @GET
