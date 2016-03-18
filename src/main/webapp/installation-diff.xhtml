@@ -70,11 +70,11 @@
         <h:outputText value="#{oldInstallation.complete}" />
         <h:outputText value="#{newInstallation.complete}" />
         <h:outputText value="Install size:" />
-        <h:outputText value="#{oldInstallation.installSize}" />
-        <h:outputText value="#{newInstallation.installSize}" />
+        <h:outputText value="#{hrn.formatBytes(oldInstallation.installSize)}" />
+        <h:outputText value="#{hrn.formatBytes(newInstallation.installSize)}" />
         <h:outputText value="Download size:" />
-        <h:outputText value="#{oldInstallation.downloadSize}" />
-        <h:outputText value="#{newInstallation.downloadSize}" />
+        <h:outputText value="#{hrn.formatBytes(oldInstallation.downloadSize)}" />
+        <h:outputText value="#{hrn.formatBytes(newInstallation.downloadSize)}" />
         <h:outputText value="Dependency count:" />
         <h:outputText value="#{oldInstallation.dependencyCount}" />
         <h:outputText value="#{newInstallation.dependencyCount}" />

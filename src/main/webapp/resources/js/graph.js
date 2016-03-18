@@ -17,19 +17,23 @@
 graphTypes = [ {
     id : 'isz',
     title : 'Install size',
-    index : 3
+    index : 3,
+    bytes : true
 }, {
     id : 'dsz',
     title : 'Download size',
-    index : 4
+    index : 4,
+    bytes : true
 }, {
     id : 'dcn',
     title : 'Dependency count',
-    index : 5
+    index : 5,
+    bytes : false
 }, {
     id : 'fcn',
     title : 'File count',
-    index : 6
+    index : 6,
+    bytes : false
 } ];
 
 var selectedId;
@@ -56,9 +60,16 @@ function graphClickHandler(collData, e, id) {
 
 function createGraph(domElement, collData, graphType) {
     var dataWidth = collData.length;
+    var dataMin = Number.MAX_SAFE_INTEGER;
+    var dataMax = 0;
+    collData.forEach(function(inst) {
+        var value = inst[graphType.index];
+        dataMin = Math.min(dataMin, value);
+        dataMax = Math.max(dataMax, value);
+    });
     var maxWidth = $(domElement).parent().width();
     // XXX don't hardcode sizes here
-    var width = Math.min(100 + 20 * dataWidth, maxWidth);
+    var width = Math.min(150 + 20 * dataWidth, maxWidth);
     var options = {
         width : width,
         labels : [ 'Timestamp', graphType.title ],
@@ -67,8 +78,27 @@ function createGraph(domElement, collData, graphType) {
             if (id) {
                 graphClickHandler(collData, e, id);
             }
+        },
+        axes : {
+            y : {
+                axisLabelWidth : 100,
+                valueRange : [ Math.max(0, dataMin - 2), dataMax + 5 ]
+            }
         }
     };
+    if (graphType.bytes) {
+        $.extend(true, options, {
+            axes : {
+                y : {
+                    labelsKMG2 : true,
+                    valueFormatter : humanReadableBytesLong,
+                    axisLabelFormatter : humanReadableBytes,
+                    valueRange : [ roundP2(dataMin - 3 * 1024 * 1024, 20),
+                            roundP2(dataMax + 6 * 1024 * 1024, 20) ]
+                }
+            }
+        });
+    }
     var graphData = [];
     collData.forEach(function(inst) {
         var timestamp = new Date(inst[1]);
@@ -114,7 +144,22 @@ function loadGraphs(data) {
             // FIXME this should be in CSS
             $(this).parent().css('float', 'left');
             var ctx = this.getContext('2d');
-            var chart = new Chart(ctx).Bar(bar[graphType.id]);
+            var options = {
+                tooltipTemplate : function(x) {
+                    return x.value;
+                }
+            };
+            if (graphType.bytes) {
+                $.extend(true, options, {
+                    scaleLabel : function(x) {
+                        return humanReadableBytes(x.value);
+                    },
+                    tooltipTemplate : function(x) {
+                        return humanReadableBytesLong(x.value);
+                    }
+                });
+            }
+            var chart = new Chart(ctx).Bar(bar[graphType.id], options);
             this.onclick = function(e) {
                 var activeBars = chart.getBarsAtEvent(e);
                 if (activeBars.length > 0) {

@@ -110,8 +110,8 @@
             <tr>
               <td><h:outputText value="#{collectionInfo.collection.name}" /></td>
               <td><h:outputText value="#{collectionInfo.latestInstallation.version}" /></td>
-              <td><h:outputText value="#{collectionInfo.latestInstallation.installSize}" /></td>
-              <td><h:outputText value="#{collectionInfo.latestInstallation.downloadSize}" /></td>
+              <td><h:outputText value="#{hrn.formatBytes(collectionInfo.latestInstallation.installSize)}" /></td>
+              <td><h:outputText value="#{hrn.formatBytes(collectionInfo.latestInstallation.downloadSize)}" /></td>
               <td><h:outputText value="#{collectionInfo.latestInstallation.dependencyCount}" /></td>
               <td><h:outputText value="#{collectionInfo.latestInstallation.fileCount}" /></td>
             </tr>

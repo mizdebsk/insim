@@ -64,9 +64,9 @@
           <h:outputText value="Is complete:" />
           <h:outputText value="#{installation.complete}" />
           <h:outputText value="Install size:" />
-          <h:outputText value="#{installation.installSize}" />
+          <h:outputText value="#{hrn.formatBytes(installation.installSize)}" />
           <h:outputText value="Download size:" />
-          <h:outputText value="#{installation.downloadSize}" />
+          <h:outputText value="#{hrn.formatBytes(installation.downloadSize)}" />
           <h:outputText value="Dependency count:" />
           <h:outputText value="#{installation.dependencyCount}" />
           <h:outputText value="File count:" />
@@ -84,8 +84,8 @@
             <th>Version</th>
             <th>Release</th>
             <th>Arch</th>
-            <th>Download size</th>
             <th>Install size</th>
+            <th>Download size</th>
             <th>File count</th>
           </tr>
         </thead>
@@ -97,8 +97,8 @@
               <td><h:outputText value="#{rpm.version}" /></td>
               <td><h:outputText value="#{rpm.release}" /></td>
               <td><h:outputText value="#{rpm.arch}" /></td>
-              <td><h:outputText value="#{rpm.downloadSize}" /></td>
-              <td><h:outputText value="#{rpm.installSize}" /></td>
+              <td><h:outputText value="#{hrn.formatBytes(rpm.installSize)}" /></td>
+              <td><h:outputText value="#{hrn.formatBytes(rpm.downloadSize)}" /></td>
               <td><h:outputText value="#{rpm.fileCount}" /></td>
             </tr>
           </ui:repeat>
