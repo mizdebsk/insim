@@ -27,6 +27,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OrderBy;
 
 /**
  * @author Mikolaj Izdebski
@@ -40,6 +41,7 @@ public class Module implements Serializable {
     private String name;
 
     @ManyToMany(mappedBy = "modules")
+    @OrderBy("name ASC")
     private List<Collection> collections;
 
     @ElementCollection
