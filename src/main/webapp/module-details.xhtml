@@ -151,12 +151,6 @@
         </div>
       </div>
 
-      <p>The following charts can be <strong>zoomed</strong>-in by clicking and dragging. To zoom-out, simply double-click
-         on the chart.</p>
-      <p>To see <strong>details</strong> of module installation, control-click on point representing it.
-         To see <strong>differences</strong> between two particular installations (from the same or different collections),
-         click on the first installation to compare and then shift-click on the second one.</p>
-
       <ui:repeat var="collectionInfo" value="#{moduleView.collectionInfos}">
         <div class="coll-#{collectionInfo.collection.name}">
           <h2>Collection #{collectionInfo.collection.name}</h2>
@@ -199,6 +193,14 @@
         </div>
       </ui:repeat>
     </h:panelGroup>
+
+    <ul id="contextMenu" class="dropdown-menu" role="menu">
+      <li id="details"><a tabindex="-1" href="#">Show details</a></li>
+      <li class="divider"></li>
+      <li id="select"><a tabindex="-1" href="#">Select for comparison</a></li>
+      <li id="compare" class="disabled"><a tabindex="-1" href="#">Compare with selected</a></li>
+    </ul>
+
   </ui:define>
 
 </ui:composition>

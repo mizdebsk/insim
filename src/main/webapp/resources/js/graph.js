@@ -37,6 +37,8 @@ graphTypes = [ {
 } ];
 
 var selectedId;
+var clickedId;
+var inhibitBodyClickHandler = false;
 
 function findInstallationIdByTimestamp(collData, timestamp) {
     for (var i = 0; i < collData.length; i++) {
@@ -48,14 +50,13 @@ function findInstallationIdByTimestamp(collData, timestamp) {
     return undefined;
 }
 
-function graphClickHandler(collData, e, id) {
-    if (e.shiftKey && selectedId) {
-        location.href = "installation/diff/" + selectedId + "/" + id;
-    } else if (e.ctrlKey) {
-        location.href = "installation/" + id;
-    } else {
-        selectedId = id;
-    }
+function graphClickHandler(e) {
+    inhibitBodyClickHandler = true;
+
+    $("#contextMenu").show().offset({
+        left : $(window).scrollLeft() + e.clientX,
+        top : $(window).scrollTop() + e.clientY
+    });
 }
 
 function createGraph(domElement, collData, graphType) {
@@ -74,9 +75,9 @@ function createGraph(domElement, collData, graphType) {
         width : width,
         labels : [ 'Timestamp', graphType.title ],
         clickCallback : function(e, x, pts) {
-            var id = findInstallationIdByTimestamp(collData, x);
-            if (id) {
-                graphClickHandler(collData, e, id);
+            clickedId = findInstallationIdByTimestamp(collData, x);
+            if (clickedId) {
+                graphClickHandler(e);
             }
         },
         axes : {
@@ -165,8 +166,8 @@ function loadGraphs(data) {
                 if (activeBars.length > 0) {
                     var collName = activeBars[0]['label'];
                     var collData = data[collName];
-                    var id = collData[collData.length - 1][0];
-                    graphClickHandler(collData, e, id);
+                    clickedId = collData[collData.length - 1][0];
+                    graphClickHandler(e);
                 }
             };
         });
@@ -175,4 +176,33 @@ function loadGraphs(data) {
 
 $(document).ready(function() {
     $.getJSON('/insim/api/data/installations/' + jsf.moduleName, loadGraphs)
+
+    $("#contextMenu > #details > a").click(function(e) {
+        $("#contextMenu").hide();
+        location.href = "installation/" + clickedId;
+        return false;
+    });
+
+    $("#contextMenu > #select > a").click(function(e) {
+        $("#contextMenu").hide();
+        $("#contextMenu > #compare").removeClass("disabled");
+        selectedId = clickedId;
+        return false;
+    });
+
+    $("#contextMenu > #compare > a").click(function(e) {
+        if (!selectedId)
+            return false;
+        $("#contextMenu").hide();
+        location.href = "installation/diff/" + selectedId + "/" + clickedId;
+        return false;
+    });
+
+    $("body").click(function(e) {
+        if (inhibitBodyClickHandler) {
+            inhibitBodyClickHandler = false;
+        } else {
+            $("#contextMenu").hide();
+        }
+    });
 });
