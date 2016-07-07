@@ -13,16 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fedoraproject.insim.frontend.view;
-
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
+package org.fedoraproject.insim.util;
 
 /**
  * @author Mikolaj Izdebski
  */
-@ManagedBean
-@ApplicationScoped
 public class Hrn {
     public static String formatBytes(double x) {
         String[] units = { "B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB" };

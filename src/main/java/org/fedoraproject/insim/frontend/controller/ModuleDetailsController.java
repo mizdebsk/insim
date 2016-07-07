@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2015 Red Hat, Inc.
+ * Copyright (c) 2016 Red Hat, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,38 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fedoraproject.insim.frontend.view;
+package org.fedoraproject.insim.frontend.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.fedoraproject.insim.data.InstallationDAO;
 import org.fedoraproject.insim.data.ModuleDAO;
 import org.fedoraproject.insim.model.Collection;
 import org.fedoraproject.insim.model.Installation;
 import org.fedoraproject.insim.model.Module;
+import org.fedoraproject.insim.util.Hrn;
 
 /**
  * @author Mikolaj Izdebski
  */
-@ManagedBean
-@ViewScoped
-public class ModuleView {
+@WebServlet("/module/*")
+public class ModuleDetailsController extends HttpServlet {
 
-    @Inject
-    private ModuleDAO dao;
-    @Inject
-    private InstallationDAO instDAO;
+    private static final long serialVersionUID = 1;
 
-    private Module module;
-
-    private String name;
-
-    private final List<CollectionInfo> collectionInfos = new ArrayList<>();
+    private static final String JSP = "/module-details.jsp";
 
     public static class CollectionInfo {
         private final Collection collection;
@@ -65,32 +63,32 @@ public class ModuleView {
 
     }
 
-    public Module getModule() {
-        return module;
-    }
+    @Inject
+    private ModuleDAO dao;
 
-    public void load() {
-        module = dao.getByName(name);
-        if (module == null)
+    @Inject
+    private InstallationDAO instDAO;
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String name = request.getPathInfo().substring(1);
+        Module module = dao.getByName(name);
+        if (module == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
-
+        }
+        request.setAttribute("module", module);
+        request.setAttribute("hrn", new Hrn());
+        List<CollectionInfo> collectionInfos = new ArrayList<>();
         for (Collection coll : module.getCollections()) {
             Installation latestInstallation = instDAO.getLatestByModuleCollection(module, coll);
             if (latestInstallation != null) {
                 collectionInfos.add(new CollectionInfo(coll, latestInstallation));
             }
         }
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<CollectionInfo> getCollectionInfos() {
-        return collectionInfos;
+        request.setAttribute("collectionInfos", collectionInfos);
+        RequestDispatcher view = request.getRequestDispatcher(JSP);
+        view.forward(request, response);
     }
 }

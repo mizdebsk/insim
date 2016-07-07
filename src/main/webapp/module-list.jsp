@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- ! Copyright (c) 2015 Red Hat, Inc.
+<%--
+ ! Copyright (c) 2015-2016 Red Hat, Inc.
  !
  ! Licensed under the Apache License, Version 2.0 (the "License");
  ! you may not use this file except in compliance with the License.
@@ -13,19 +12,17 @@
  ! WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  ! See the License for the specific language governing permissions and
  ! limitations under the License.
- `-->
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:h="http://java.sun.com/jsf/html"
-                template="/WEB-INF/templates/default.xhtml">
+ `--%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-  <ui:define name="title">
+<t:genericpage>
+	<jsp:attribute name="title">
     Modules
-  </ui:define>
+	</jsp:attribute>
 
-  <ui:define name="content">
-    <ui:include src="list.xhtml" />
-  </ui:define>
-
-</ui:composition>
+	<jsp:body>
+      <jsp:include page="list.jsp" />
+    </jsp:body>
+</t:genericpage>

@@ -123,8 +123,18 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.jboss.spec.javax.faces</groupId>
-      <artifactId>jboss-jsf-api_2.2_spec</artifactId>
+      <groupId>org.jboss.spec.javax.servlet</groupId>
+      <artifactId>jboss-servlet-api_3.1_spec</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.spec.javax.servlet.jsp</groupId>
+      <artifactId>jboss-jsp-api_2.3_spec</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.spec.javax.servlet.jstl</groupId>
+      <artifactId>jboss-jstl-api_1.2_spec</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -136,20 +146,6 @@
       <groupId>org.jboss.spec.javax.transaction</groupId>
       <artifactId>jboss-transaction-api_1.2_spec</artifactId>
       <scope>provided</scope>
-    </dependency>
-
-    <!-- Runtime dependencies -->
-    <dependency>
-      <groupId>org.ocpsoft.rewrite</groupId>
-      <artifactId>rewrite-servlet</artifactId>
-      <version>2.0.12.Final</version>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.ocpsoft.rewrite</groupId>
-      <artifactId>rewrite-config-prettyfaces</artifactId>
-      <version>2.0.12.Final</version>
-      <scope>runtime</scope>
     </dependency>
 
     <!-- Hibernate annotation processors -->

@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="US-ASCII"?>
-<!--
- ! Copyright (c) 2015 Red Hat, Inc.
+<%--
+ ! Copyright (c) 2015-2016 Red Hat, Inc.
  !
  ! Licensed under the Apache License, Version 2.0 (the "License");
  ! you may not use this file except in compliance with the License.
@@ -13,9 +12,18 @@
  ! WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  ! See the License for the specific language governing permissions and
  ! limitations under the License.
- `-->
-<faces-config version="2.2"
-              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
-                                  http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"/>
+ `--%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<c:if test="${empty modules}">
+	<em>No modules.</em>
+</c:if>
+
+<c:if test="${not empty modules}">
+	<div class="list-group col-md-4">
+		<c:forEach items="${modules}" var="module">
+			<a href="<c:url value="/module/${module.name}"/>"
+				class="list-group-item">${module.name}</a>
+		</c:forEach>
+	</div>
+</c:if>

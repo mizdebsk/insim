@@ -179,7 +179,7 @@ $(document).ready(function() {
 
     $("#contextMenu > #details > a").click(function(e) {
         $("#contextMenu").hide();
-        location.href = "installation/" + clickedId;
+        location.href = "../installation/" + clickedId;
         return false;
     });
 
@@ -194,7 +194,7 @@ $(document).ready(function() {
         if (!selectedId)
             return false;
         $("#contextMenu").hide();
-        location.href = "installation/diff/" + selectedId + "/" + clickedId;
+        location.href = "../installation/diff/" + selectedId + "/" + clickedId;
         return false;
     });
 
