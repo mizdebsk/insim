@@ -50,10 +50,10 @@ public class Installation implements Serializable {
     @ManyToOne(optional = false)
     private Repository repository;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String version;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String release;
 
     @Column(nullable = false)
